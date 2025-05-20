@@ -44,11 +44,10 @@ public class Usuario {
     public String getEmail() { return this.email; }
     public String getCargo() { return this.cargo; }
 
-    // Métodos
     public void getUsuario() {
         System.out.println("ID: " + getId());
         System.out.println("Nome: " + getNome());
         System.out.println("Email: " + getEmail());
-        System.out.println("Cargo: " + getCargo());
+        System.out.println("Cargo: " + getCargo() + "\n");
     }
 }

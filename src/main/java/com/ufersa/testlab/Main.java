@@ -1,5 +1,6 @@
 package com.ufersa.testlab;
 
+import com.ufersa.testlab.entities.Disciplina;
 import com.ufersa.testlab.entities.Usuario;
 import com.ufersa.testlab.repositories.BancodeTeste;
 
@@ -28,5 +29,9 @@ public class Main {
         bd.deletarUsuario(2L);
         bd.dadosUsuario(bd.pegarUsuarioId(2L));
         bd.atualizarUsuario(1L, "Bruce", null, null, null);
+
+        Disciplina matematica = new Disciplina("ABC123", "Matematica", new String[] {"Algebra", "Probabilidade", "Derivação"});
+        bd.cadastrarDisciplina(matematica);
+        bd.dadosDisciplina(bd.pegarDisciplinaCodigo("ABC123"));
     }
 }

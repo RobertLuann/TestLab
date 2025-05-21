@@ -1,11 +1,13 @@
 package com.ufersa.testlab.repositories;
 
+import com.ufersa.testlab.entities.Disciplina;
 import com.ufersa.testlab.entities.Usuario;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BancodeTeste {
     private final List<Usuario> usuarios = new ArrayList<>();
+    private final List<Disciplina> disciplinas = new ArrayList<>();
 
     // Tabela Usuario
     public void cadastrarUsuario(Usuario usuario) {
@@ -54,4 +56,52 @@ public class BancodeTeste {
             System.out.println("Usuário não encontrado.");
         }
     }
+
+    // Simulação tabela Disciplina
+    public void cadastrarDisciplina(Disciplina disc) {
+        disciplinas.add(disc);
+    }
+
+    public List<Disciplina> listarDisciplinas() {
+        return disciplinas;
+    }
+
+    public Disciplina pegarDisciplinaCodigo(String codigo) {
+        for (Disciplina disciplina : disciplinas) {
+            if (disciplina.getCodigo().equals(codigo)) {
+                return disciplina;
+            }
+        }
+        System.out.println("Disciplina não encontrada.");
+        return null;
+    }
+
+    public void dadosDisciplina(Disciplina d) {
+        if (!(d == null)) {
+            d.getDisciplina();
+        }
+    }
+
+    public void atualizarDisciplina(String codigo, String nome, String[] assuntos) {
+        Disciplina disc = pegarDisciplinaCodigo(codigo);
+        if (disc == null) {
+            System.out.println("Disciplina não encontrada para atualização.");
+            return;
+        }
+
+        if (codigo != null && !codigo.isBlank()) disc.setCodigo(codigo);
+        if (nome != null && !nome.isBlank()) disc.setNome(nome);
+        if (assuntos != null) disc.setAssuntos(assuntos);
+        System.out.println("Disciplina atualizado com sucesso.");
+    }
+
+    public void deletarDisciplina(String codigo) {
+        boolean removido = disciplinas.removeIf(disciplina -> disciplina.getCodigo().equals(codigo));
+        if (removido) {
+            System.out.println("Disciplina apagada com sucesso.");
+        } else {
+            System.out.println("Disciplina não encontrada.");
+        }
+    }
+
 }

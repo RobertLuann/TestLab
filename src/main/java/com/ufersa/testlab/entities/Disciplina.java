@@ -51,7 +51,7 @@ public class Disciplina {
         System.out.println("Código: " + getCodigo());
         System.out.println("Nome: " + getNome());
         System.out.println("Assuntos: ");
-        for (String assunto : this.assuntos) {
+        for (String assunto : getAssuntos()) {
             System.out.println(assunto);
         }
     }

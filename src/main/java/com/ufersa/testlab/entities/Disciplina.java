@@ -55,4 +55,9 @@ public class Disciplina {
             System.out.println(assunto);
         }
     }
+    //metodo
+    @Override
+    public String toString() {
+        return this.nome;
+    }
 }

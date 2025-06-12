@@ -113,7 +113,7 @@ public class BancodeTeste {
     }
 
     //simulacao tabela de questoes
-    public void cadastrarQuestao(Questao quest) {
+    public void criarQuestao(Questao quest) {
         questoes.add(quest);
     }
 
@@ -166,14 +166,14 @@ public class BancodeTeste {
             case MULTIPLA_ESCOLHA: {
                 deletarQuestaoEmSilencio(codigo);
                 Questao questao3 = new QuestaoMultiplaEscolha(codigo, quest.getEnunciado(), quest.getDisciplina(), quest.getAssunto(), quest.getDificuldade(), novasOpcoes, novoGabarito);
-                cadastrarQuestao(questao3);
+                criarQuestao(questao3);
                     break; 
             }
 
             case DISSERTATIVA: {
                 deletarQuestaoEmSilencio(codigo); 
                 Questao questao4 = new QuestaoDissertativa(codigo, quest.getEnunciado(), quest.getDisciplina(), quest.getAssunto(), quest.getDificuldade(), novaResposta);
-                cadastrarQuestao(questao4); 
+                criarQuestao(questao4); 
                     break;
             }
             default:

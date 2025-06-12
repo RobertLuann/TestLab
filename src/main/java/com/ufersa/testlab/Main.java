@@ -57,9 +57,9 @@ public class Main {
 
         //cria, cadastra e lista
         Questao questao1 = new QuestaoDissertativa ("789XYZ","Qual a diferença de \"mais\" e \"mas\"?", portugues, "Gramatica", 1, "\"mais\" é intensidade, \"mas\" é oposição.");
-        bd.cadastrarQuestao(questao1);
+        bd.criarQuestao(questao1);
         Questao questao2 = new QuestaoMultiplaEscolha ("987ZYX", "Se x é igual a 60, quanto vale 3x?", matematica, "Algebra", 2, Arrays.asList("300", "180", "90", "nenhuma das anteriores."), 1);
-        bd.cadastrarQuestao(questao2);
+        bd.criarQuestao(questao2);
         for (Questao quest : bd.listarQuestoes()) bd.dadosQuestao(quest);
 
         //atualizações
@@ -73,7 +73,7 @@ public class Main {
 
         //nova questão para testar buscas
         Questao questao7 = new QuestaoMultiplaEscolha ("567ASD", "Qual a probabilidade de qualquer dia ser domingo?", matematica, "Probabilidade", 4, Arrays.asList("1/4", "2/7", "7/1", "1/7."), 3);
-        bd.cadastrarQuestao(questao7);
+        bd.criarQuestao(questao7);
 
         //buscas
         bd.buscarPorDisciplina(matematica);

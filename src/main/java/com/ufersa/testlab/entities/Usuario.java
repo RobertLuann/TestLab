@@ -1,30 +1,33 @@
 package com.ufersa.testlab.entities;
 
-public class Usuario {
-    private Long id;
-    private String nome;
-    private String email;
-    private String senha;
-    private String cargo;
-    public static Long qtdUsuario = 0L;
+import jakarta.persistence.*;
 
-    // Construtores
-    public Usuario() {
-        qtdUsuario++;
-    }
-    public Usuario(String nome, String email, String senha, String cargo) {
-        qtdUsuario++;
-        setId();
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "usuario", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+public abstract class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String senha;
+
+    public Usuario() {}
+
+    public Usuario(String nome, String email, String senha) {
         setNome(nome);
         setEmail(email);
         setSenha(senha);
-        setCargo(cargo);
     }
 
-    // Setters
-    public void setId() {
-        this.id = qtdUsuario;
-    }
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -34,20 +37,10 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
 
     // Getters
     public Long getId() { return this.id; }
     public String getNome() { return this.nome; }
     public String getEmail() { return this.email; }
-    public String getCargo() { return this.cargo; }
-
-    public void getUsuario() {
-        System.out.println("ID: " + getId());
-        System.out.println("Nome: " + getNome());
-        System.out.println("Email: " + getEmail());
-        System.out.println("Cargo: " + getCargo() + "\n");
-    }
+    public String getSenha() { return this.senha; }
 }

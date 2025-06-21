@@ -4,6 +4,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.ufersa.testlab.entities.Funcionario</class>
         <class>com.ufersa.testlab.entities.Gerente</class>
+        <class>com.ufersa.testlab.entities.Disciplina</class>
 
         <properties>
             <!-- Configuração do banco -->

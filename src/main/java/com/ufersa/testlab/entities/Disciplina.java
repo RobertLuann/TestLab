@@ -1,22 +1,33 @@
 package com.ufersa.testlab.entities;
 
 
+import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "disciplina")
 public class Disciplina {
+    @Id
     private String codigo;
+
+    @Column(nullable = false)
     private String nome;
+
+    @ElementCollection
+    @CollectionTable(
+            name = "disciplina_assunto",
+            joinColumns = @JoinColumn(name = "disciplina_assunto")
+    )
+    @Column(nullable = false)
     private final List<String> assuntos = new ArrayList<>();
 
     // Construtores
-    public Disciplina(String codigo) {
-        setCodigo(codigo);
-    }
-    public Disciplina(String codigo, String nome, String[] assuntos) {
+    public Disciplina() {}
+
+    public Disciplina(String codigo, String nome) {
         setCodigo(codigo);
         setNome(nome);
-        setAssuntos(assuntos);
     }
 
     // Setters
@@ -26,15 +37,8 @@ public class Disciplina {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public void setAssuntos(String[] assuntos) {
-        this.assuntos.clear();
-        if (assuntos != null) {
-            for (String assunto : assuntos) {
-                if (assunto != null && !assunto.isBlank()) {
-                    this.assuntos.add(assunto);
-                }
-            }
-        }
+    public void setAssunto(String assunto) {
+        this.assuntos.add(assunto);
     }
 
     // Getters
@@ -47,17 +51,9 @@ public class Disciplina {
     public List<String> getAssuntos() {
         return this.assuntos;
     }
-    public void getDisciplina() {
-        System.out.println("Código: " + getCodigo());
-        System.out.println("Nome: " + getNome());
-        System.out.println("Assuntos: ");
-        for (String assunto : getAssuntos()) {
-            System.out.println(assunto);
-        }
-    }
-    //metodo
-    @Override
-    public String toString() {
-        return this.nome;
+
+    // Metodos
+    public void deleteAssuntos() {
+        assuntos.clear();
     }
 }

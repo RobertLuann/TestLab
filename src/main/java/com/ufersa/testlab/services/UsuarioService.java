@@ -8,7 +8,7 @@ import com.ufersa.testlab.dao.UsuarioDAO;
 import java.util.List;
 
 public class UsuarioService {
-    private UsuarioDAO usuarioDAO = new UsuarioDAO();
+    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     public void cadastrarUsuario(String nome, String email, String senha, boolean eGerente) {
         // TO-DO: validar os dados do Usuario

@@ -4,6 +4,9 @@ import com.ufersa.testlab.entities.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 import java.util.List;
 
@@ -21,6 +24,15 @@ public class UsuarioDAO {
     public Usuario buscarPorID(Long id) {
         EntityManager em = emf.createEntityManager();
         Usuario usuario = em.find(Usuario.class, id);
+        em.close();
+        return usuario;
+    }
+
+    public Usuario buscarPorEmail(String email) {
+        EntityManager em = emf.createEntityManager();
+        Usuario usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
+                .setParameter("email", email)
+                .getSingleResult();
         em.close();
         return usuario;
     }

@@ -27,6 +27,10 @@ public class UsuarioService {
         return u;
     }
 
+    public Usuario buscarPorEmail(String email) {
+        return usuarioDAO.buscarPorEmail(email);
+    }
+
     public List<Usuario> listarUsuarios() {
         return usuarioDAO.listarUsuarios();
     }

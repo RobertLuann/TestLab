@@ -3,7 +3,8 @@ package com.ufersa.testlab.entities;
 import jakarta.persistence.*;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
 @Table(name = "usuario", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public abstract class Usuario {
 

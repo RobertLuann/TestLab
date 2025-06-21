@@ -19,6 +19,6 @@ public class Main {
         UsuarioService usuarioService = new UsuarioService();
 
         usuarioService.cadastrarUsuario("Gerente", "gerente@gmail.com", "gerente123", true);
-        System.out.println(usuarioService.buscarPorId(1L) instanceof Gerente);
+        // System.out.println(usuarioService.buscarPorId(1L) instanceof Gerente);
     }
 }

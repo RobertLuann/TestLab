@@ -12,12 +12,19 @@ public class UsuarioService {
 
     public void cadastrarUsuario(String nome, String email, String senha, boolean eGerente) {
         // TO-DO: validar os dados do Usuario
-        if (eGerente) {
-            Gerente g = new Gerente(nome, email, senha);
-            usuarioDAO.cadastrarUsuario(g);
+        Usuario emailUsado = buscarPorEmail(email);
+
+        if (emailUsado != null) {
+            System.out.println("Email ja esta sendo utilizado!");
         } else {
-            Funcionario f = new Funcionario(nome, email, senha);
-            usuarioDAO.cadastrarUsuario(f);
+
+            if (eGerente) {
+                Gerente g = new Gerente(nome, email, senha);
+                usuarioDAO.cadastrarUsuario(g);
+            } else {
+                Funcionario f = new Funcionario(nome, email, senha);
+                usuarioDAO.cadastrarUsuario(f);
+            }
         }
     }
 

@@ -3,6 +3,7 @@ package com.ufersa.testlab.dao;
 import com.ufersa.testlab.entities.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -30,10 +31,17 @@ public class UsuarioDAO {
 
     public Usuario buscarPorEmail(String email) {
         EntityManager em = emf.createEntityManager();
-        Usuario usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
-                .setParameter("email", email)
-                .getSingleResult();
-        em.close();
+        Usuario usuario = null;
+        try {
+            usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+        } catch (NoResultException e) {
+            System.out.println("Email ja esta sendo utilizado!");
+        } finally {
+            em.close();
+        }
         return usuario;
     }
 

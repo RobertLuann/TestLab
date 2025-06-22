@@ -21,6 +21,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/jakarta.persistence/jakarta.persistence-api
     implementation("jakarta.persistence:jakarta.persistence-api:3.2.0")
+
+    // https://mvnrepository.com/artifact/commons-validator/commons-validator
+    implementation("commons-validator:commons-validator:1.9.0")
 }
 
 tasks.test {

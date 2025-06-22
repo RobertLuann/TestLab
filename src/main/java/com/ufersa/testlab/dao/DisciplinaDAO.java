@@ -3,7 +3,6 @@ package com.ufersa.testlab.dao;
 import com.ufersa.testlab.entities.Disciplina;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.Persistence;
 
 import java.util.List;

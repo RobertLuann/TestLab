@@ -25,7 +25,7 @@ public class UsuarioDAO {
     public Usuario buscarPorEmail(String email) {
         Usuario usuario = null;
         try {
-            usuario = (Usuario) em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
+            usuario = em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
                     .setParameter("email", email)
                     .getSingleResult();
 

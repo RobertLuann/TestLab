@@ -4,6 +4,9 @@ import com.ufersa.testlab.entities.Funcionario;
 import com.ufersa.testlab.entities.Gerente;
 import com.ufersa.testlab.entities.Usuario;
 import com.ufersa.testlab.dao.UsuarioDAO;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.List;
 
@@ -11,13 +14,23 @@ public class UsuarioService {
     private final UsuarioDAO usuarioDAO = new UsuarioDAO();
 
     public void cadastrarUsuario(String nome, String email, String senha, boolean eGerente) {
-        // TO-DO: validar os dados do Usuario
+        if (nome.isBlank()) {
+            throw new IllegalArgumentException("Nome não pode ser nulo.");
+        }
+
+        if (!EmailValidator.getInstance().isValid(email)) {
+            throw new IllegalArgumentException("Email inválido.");
+        }
+
+        if (senha.length() < 6) {
+            throw new IllegalArgumentException("Senha deve ter no mínimo 6 caracteres.");
+        }
+
         Usuario emailUsado = buscarPorEmail(email);
 
         if (emailUsado != null) {
-            System.out.println("Email ja esta sendo utilizado!");
+            throw new EntityExistsException("Email já está em uso.");
         } else {
-
             if (eGerente) {
                 Gerente g = new Gerente(nome, email, senha);
                 usuarioDAO.cadastrarUsuario(g);
@@ -29,9 +42,11 @@ public class UsuarioService {
     }
 
     public Usuario buscarPorId(Long id) {
-        Usuario u = usuarioDAO.buscarPorID(id);
-        // TO-DO: verificar se o usuario é nulo
-        return u;
+        Usuario usuario = usuarioDAO.buscarPorID(id);
+        if (usuario == null) {
+            throw new EntityNotFoundException("Usuário não encontrado.");
+        }
+        return usuario;
     }
 
     public Usuario buscarPorEmail(String email) {
@@ -39,27 +54,45 @@ public class UsuarioService {
     }
 
     public List<Usuario> listarUsuarios() {
-        return usuarioDAO.listarUsuarios();
+        List<Usuario> usuarios = usuarioDAO.listarUsuarios();
+        if (usuarios.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum usuário cadastrado.");
+        }
+        return usuarios;
     }
 
     public void atualizarUsuario(Long id, String nome, String email, String senha) {
-        Usuario usuario = usuarioDAO.buscarPorID(id);
+        Usuario usuario = buscarPorId(id);
 
-        if (usuario != null) {
-            // TO-DO: validar os novos dados
-            usuario.setNome(nome);
-            usuario.setEmail(email);
-            usuario.setSenha(senha);
-
-            usuarioDAO.atualizarUsuario(usuario);
+        if (nome.isBlank()) {
+            throw new IllegalArgumentException("Nome não pode ser nulo.");
         }
+
+        if (!EmailValidator.getInstance().isValid(email)) {
+            throw new IllegalArgumentException("Email inválido.");
+        }
+
+        if (senha.length() < 6) {
+            throw new IllegalArgumentException("Senha deve ter no mínimo 6 caracteres.");
+        }
+
+        Usuario emailUsado = buscarPorEmail(email);
+
+        if (emailUsado == null) {
+        } else if (!emailUsado.getId().equals(id)) {
+            throw new EntityExistsException("Email já está em uso.");
+        }
+
+        usuario.setNome(nome);
+        usuario.setEmail(email);
+        usuario.setSenha(senha);
+
+        usuarioDAO.atualizarUsuario(usuario);
     }
 
     public void deletarUsuario(Long id) {
-        Usuario u = usuarioDAO.buscarPorID(id);
-        // TO-DO: fazer melhor tratamento de exceções
-        if (u != null) {
-            usuarioDAO.deletarUsuario(u);
-        }
+        Usuario u = buscarPorId(id);
+
+        usuarioDAO.deletarUsuario(u);
     }
 }

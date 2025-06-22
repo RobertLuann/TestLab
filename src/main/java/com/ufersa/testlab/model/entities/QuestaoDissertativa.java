@@ -1,4 +1,4 @@
-package com.ufersa.testlab.entities;
+package com.ufersa.testlab.model.entities;
 
 public class QuestaoDissertativa extends Questao {
     private String resposta;

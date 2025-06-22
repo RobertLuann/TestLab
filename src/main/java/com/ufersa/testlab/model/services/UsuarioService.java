@@ -1,9 +1,9 @@
-package com.ufersa.testlab.services;
+package com.ufersa.testlab.model.services;
 
-import com.ufersa.testlab.entities.Funcionario;
-import com.ufersa.testlab.entities.Gerente;
-import com.ufersa.testlab.entities.Usuario;
-import com.ufersa.testlab.dao.UsuarioDAO;
+import com.ufersa.testlab.model.entities.Funcionario;
+import com.ufersa.testlab.model.entities.Gerente;
+import com.ufersa.testlab.model.entities.Usuario;
+import com.ufersa.testlab.model.dao.UsuarioDAO;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.apache.commons.validator.routines.EmailValidator;

@@ -1,8 +1,7 @@
-package com.ufersa.testlab.services;
+package com.ufersa.testlab.model.services;
 
-import com.ufersa.testlab.dao.DisciplinaDAO;
-import com.ufersa.testlab.entities.Disciplina;
-import com.ufersa.testlab.entities.Usuario;
+import com.ufersa.testlab.model.dao.DisciplinaDAO;
+import com.ufersa.testlab.model.entities.Disciplina;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 

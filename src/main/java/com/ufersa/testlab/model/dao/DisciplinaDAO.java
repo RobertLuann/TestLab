@@ -1,6 +1,6 @@
-package com.ufersa.testlab.dao;
+package com.ufersa.testlab.model.dao;
 
-import com.ufersa.testlab.entities.Disciplina;
+import com.ufersa.testlab.model.entities.Disciplina;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;

@@ -1,54 +1,56 @@
 package com.ufersa.testlab.model.entities;
 
+import jakarta.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_questao", discriminatorType = DiscriminatorType.STRING)
 public abstract class Questao {
+    @Id
     private String codigo;
-    private TipoQuestao tipo;
+
+    @Column(nullable = false)
     private String enunciado;
-    private Disciplina disciplina;
+
+    @Column(nullable = false)
+    private String codigoDisciplina;
+
+    @Column(nullable = false)
     private String assunto;
-    private Integer dificuldade;
+
+    @Column(nullable = false)
+    private Long dificuldade;
 
     // Construtores
-    public Questao(String codigo) {
-        setCodigo(codigo);
-    }
+    public Questao() {}
 
-    public Questao(String codigo, TipoQuestao tipo, String enunciado, Disciplina disciplina, String assunto, Integer dificuldade) {
+    public Questao(String codigo, String enunciado, String codigoDisciplina, String assunto, Long dificuldade) {
         setCodigo(codigo);
-        setTipo(tipo);
         setEnunciado(enunciado);
-        setDisciplina(disciplina);
+        setDisciplina(codigoDisciplina);
         setAssunto(assunto);
         setDificuldade(dificuldade);
     }
 
     // Setters
     public void setCodigo(String codigo) { this.codigo = codigo; }
-    public void setTipo(TipoQuestao tipo) { this.tipo = tipo; }
     public void setEnunciado(String enunciado) { this.enunciado = enunciado; }
-    public void setDisciplina(Disciplina disciplina) { this.disciplina = disciplina; }
+    public void setCodigoDisciplina(String codigoDisciplina) { this.codigoDisciplina = codigoDisciplina; }
+    public void setDisciplina(String codigoDisciplina) { this.codigoDisciplina = codigoDisciplina; }
 
     public void setAssunto(String assunto) {
-        if (!disciplina.getAssuntos().contains(assunto)) {
-            throw new IllegalArgumentException("Assunto inválido!");
-        }
         this.assunto = assunto;
     }
-    public void setDificuldade(Integer dificuldade) {
-        if (dificuldade < 1 || dificuldade > 5) {
-            System.out.println("dificuldade invalida: " + getDificuldade());          
-            throw new IllegalArgumentException("Dificuldade inválida!");
-        }
+    public void setDificuldade(Long dificuldade) {
         this.dificuldade = dificuldade;
     }
 
     // Getters
     public String getCodigo() { return this.codigo; }
-    public TipoQuestao getTipo() { return tipo; }
     public String getEnunciado() { return this.enunciado; }
-    public Disciplina getDisciplina() { return this.disciplina; }
+    public String getDisciplina() { return this.codigoDisciplina; }
     public String getAssunto() { return this.assunto; }
-    public Integer getDificuldade() { return this.dificuldade; }
+    public Long getDificuldade() { return this.dificuldade; }
 
     public abstract void getQuestao();
 }

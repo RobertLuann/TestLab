@@ -2,6 +2,10 @@ package com.ufersa.testlab;
 
 import com.ufersa.testlab.model.services.DisciplinaService;
 import com.ufersa.testlab.model.services.UsuarioService;
+import com.ufersa.testlab.model.entities.*; // ... e outras importações
+import com.ufersa.testlab.model.service.ProvaService;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
@@ -18,7 +22,7 @@ public class Main {
         // usuarioService.deletarUsuario(1L);
 
         // Disciplinas
-        DisciplinaService disciplinaService = new DisciplinaService();
+       // DisciplinaService disciplinaService = new DisciplinaService();
 
         // disciplinaService.cadastrarDisciplina("DEF123", "Banco de Dados", List.of("SQL", "PostgreSQL"));
         // System.out.println(disciplinaService.buscarPorCodigo("ABC123").getNome());
@@ -27,5 +31,21 @@ public class Main {
         // }
         // disciplinaService.atualizarDisciplina("ABC123", "Discreta", List.of("Cifra de Cesar", "Conjuntos Numericos"));
         //disciplinaService.deletarDisciplina("AC123");
+
+
+
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("testlab-pu");
+        try {
+        ProvaService provaService = new ProvaService(factory);
+
+        Prova novaProva = new Prova("Prova de Conhecimentos Gerais");
+        // adicionar questões
+            provaService.criarProva(novaProva);
+
+        } catch (Exception e) {
+        e.printStackTrace();
+        } finally {
+                if (factory != null) factory.close();
+        }
     }
 }

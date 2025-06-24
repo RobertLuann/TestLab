@@ -7,7 +7,7 @@
         <class>com.ufersa.testlab.model.entities.Disciplina</class>
         <class>com.ufersa.testlab.model.entities.QuestaoMultiplaEscolha</class>
         <class>com.ufersa.testlab.model.entities.QuestaoDissertativa</class>
-
+        <class>com.ufersa.testlab.model.entities.Prova</class>
 
         <properties>
             <!-- Configuração do banco -->

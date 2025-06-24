@@ -1,25 +1,28 @@
 package com.ufersa.testlab.model.dao;
 
 import com.ufersa.testlab.model.entities.Prova;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
+
 import java.util.List;
 
 public class ProvaDAO {
 
-    private EntityManager em;
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestLab");
 
-    public ProvaDAO(EntityManager em) {
-        this.em = em;
+    private final EntityManager em = emf.createEntityManager();
+
+    public ProvaDAO() {}
+
+    public void cadastrarProva(Prova prova) {
+        em.getTransaction().begin();
+        em.persist(prova);
+        em.getTransaction().commit();
     }
 
-    public Prova salvar(Prova prova) {
-        return em.merge(prova);
-    }
-
-    public void excluir(Prova prova) {
+    public void deletarProva(Prova prova) {
+        em.getTransaction().begin();
         em.remove(prova);
+        em.getTransaction().commit();
     }
 
     public Prova buscarPorId(Long id) {
@@ -28,17 +31,30 @@ public class ProvaDAO {
 
     public Prova buscarPorTitulo(String titulo) {
         try {
-            TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p WHERE p.titulo = :titulo", Prova.class);
-            query.setParameter("titulo", titulo);
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            return null; // Retorna nulo se não encontrar o que se espera
+            return em.createQuery("SELECT p FROM Prova p WHERE p.titulo = :titulo", Prova.class)
+                    .setParameter("titulo", titulo)
+                    .getSingleResult();
+        } catch(NoResultException e) {
+            return null;
         }
+    }
+
+    public List<Prova> buscarPorDisciplina(String codigoDisciplina) {
+        return em.createQuery(
+                        "SELECT p FROM Prova p WHERE p.disciplina.codigo = :codigo", Prova.class)
+                .setParameter("codigo", codigoDisciplina)
+                .getResultList();
     }
 
     public List<Prova> listarTodas() {
         String jpql = "SELECT p FROM Prova p";
         TypedQuery<Prova> query = em.createQuery(jpql, Prova.class);
         return query.getResultList();
+    }
+
+    public void atualizarProva(Prova prova) {
+        em.getTransaction().begin();
+        em.merge(prova);
+        em.getTransaction().commit();
     }
 }

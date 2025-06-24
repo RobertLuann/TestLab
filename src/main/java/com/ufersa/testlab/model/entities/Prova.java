@@ -1,71 +1,59 @@
 package com.ufersa.testlab.model.entities;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "tb_prova")
 public class Prova {
-    private long id;
-    private String disciplina;
-    private Questoes questoes;
-    private Date dataCriacao;
 
-    // Construtor
-    public Prova(long id, String disciplina, Questoes questoes, Date dataCriacao) {
-        setId(id);
-        setDisciplina(disciplina);
-        setQuestoes(questoes);
-        setDataCriacao(dataCriacao);
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String titulo;
+
+    @OneToMany(mappedBy = "prova", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Questao> questoes = new ArrayList<>();
+
+    private LocalDateTime dataCriacao;
+
+    public Prova() {
+        // Construtor vazio
     }
 
-    // Setters
-    public void setId(long id) {
-        this.id = id;
+    public Prova(String titulo) {
+        this.titulo = titulo;
+        this.dataCriacao = LocalDateTime.now();
     }
 
-    public void setDisciplina(String disciplina) {
-        this.disciplina = disciplina;
+    public void adicionarQuestao(Questao questao) {
+        this.questoes.add(questao);
+        questao.setProva(this);
     }
 
-    public void setQuestoes(Questoes questoes) {
-        this.questoes = questoes;
-    }
-
-    public void setDataCriacao(Date dataCriacao) {
-        this.dataCriacao = dataCriacao;
-    }
-
-    // Getters
+    // Getters/Setters
     public Long getId() {
-        return this.id;
+        return id;
     }
 
-    public String getDisciplina() {
-        return this.disciplina;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public Questoes getQuestoes() {
-        return this.questoes;
+    public List<Questao> getQuestoes() {
+        return questoes;
     }
 
-    public Date getDataCriacao() {
-        return this.dataCriacao;
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
     }
 
-    // Exibe dados da prova
-    public void getProva() {
-        System.out.println("Id: " + getId());
-        System.out.println("Disciplina: " + getDisciplina());
-        System.out.println("Questões: " + getQuestoes());
-        System.out.println("Data de criação: " + getDataCriacao());
-    }
-    //metodo que cria prova
-    public static Prova criarProva(long id, String disciplina, Questoes questoes, Date dataCriacao) {
-        return new Prova(id, disciplina, questoes, dataCriacao);
-    }
-
-    //metodo que deleta prova
-    public static boolean deletarProva(List<Prova> provas, long id) {
-        return provas.removeIf(prova -> prova.getId() == id);
+    public void setQuestoes(List<Questao> questoes) {
+        this.questoes = questoes;
     }
 
 }

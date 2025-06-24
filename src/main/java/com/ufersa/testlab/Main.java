@@ -5,8 +5,11 @@ import com.ufersa.testlab.model.entities.Questao;
 import com.ufersa.testlab.model.services.DisciplinaService;
 import com.ufersa.testlab.model.services.QuestaoService;
 import com.ufersa.testlab.model.services.UsuarioService;
-
 import java.util.List;
+import com.ufersa.testlab.model.entities.*;
+import com.ufersa.testlab.model.service.ProvaService;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
@@ -26,6 +29,7 @@ public class Main {
         // Disciplinas
         // DisciplinaService disciplinaService = new DisciplinaService();
 
+
         // disciplinaService.cadastrarDisciplina("DEF123", "Banco de Dados", List.of("SQL", "PostgreSQL"));
         // System.out.println(disciplinaService.buscarPorCodigo("ABC123").getNome());
         // for (Disciplina d : disciplinaService.listarDisciplinas()) {
@@ -33,8 +37,7 @@ public class Main {
         // }
         // disciplinaService.atualizarDisciplina("ABC123", "Discreta", List.of("Cifra de Cesar", "Conjuntos Numericos"));
         //disciplinaService.deletarDisciplina("AC123");
-
-        // Questoes
+       // Questoes
         QuestaoService questaoService =  new QuestaoService();
 
         // questaoService.cadastrarQuestaoDissertativa("MAN123", "Questao 1 ae", "ABC123", "Cifra de Cesar", 3L, "Ta certo");
@@ -54,5 +57,20 @@ public class Main {
         //      System.out.println(q.getEnunciado());
         // }
         // questaoService.deletarQuestao("EII321");
+
+
+        EntityManagerFactory factory = Persistence.createEntityManagerFactory("testlab-pu");
+        try {
+        ProvaService provaService = new ProvaService(factory);
+
+        Prova novaProva = new Prova("Prova de Conhecimentos Gerais");
+        // adicionar questões
+            provaService.criarProva(novaProva);
+
+        } catch (Exception e) {
+        e.printStackTrace();
+        } finally {
+                if (factory != null) factory.close();
+        }
     }
 }

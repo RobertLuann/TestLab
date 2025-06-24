@@ -5,6 +5,9 @@
         <class>com.ufersa.testlab.model.entities.Funcionario</class>
         <class>com.ufersa.testlab.model.entities.Gerente</class>
         <class>com.ufersa.testlab.model.entities.Disciplina</class>
+        <class>com.ufersa.testlab.model.entities.QuestaoMultiplaEscolha</class>
+        <class>com.ufersa.testlab.model.entities.QuestaoDissertativa</class>
+
 
         <properties>
             <!-- Configuração do banco -->

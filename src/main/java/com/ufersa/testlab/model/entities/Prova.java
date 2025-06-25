@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "prova", uniqueConstraints = @UniqueConstraint(columnNames = "titulo"))
+@Table(name = "prova")
 public class Prova {
 
     @Id
@@ -25,7 +25,7 @@ public class Prova {
     private List<Questao> questoes = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "codigo_disciplina", referencedColumnName = "codigo")
+    @JoinColumn(name = "codigo_disciplina")
     private Disciplina disciplina;
 
     @Column(name = "data_criacao")
@@ -34,50 +34,54 @@ public class Prova {
     public Prova() {}
 
     public Prova(String titulo, List<Questao> questoes, Disciplina disciplina) {
-        setTitulo(titulo);
-        setQuestoes(questoes);
-        setDisciplina(disciplina);
+        this.titulo = titulo;
+        this.questoes = questoes;
+        this.disciplina = disciplina;
         this.dataCriacao = LocalDateTime.now();
     }
 
     public void adicionarQuestao(Questao questao) {
+        if (this.questoes == null) {
+            this.questoes = new ArrayList<>();
+        }
         this.questoes.add(questao);
     }
 
-    // Getters/Setters
+    public void removerQuestao(Questao questao) {
+        if (this.questoes != null) {
+            this.questoes.remove(questao);
+        }
+    }
+
+    //Getters/Setters
     public Long getId() {
         return id;
     }
-
+    public void setId(Long id) {
+        this.id = id;
+    }
     public String getTitulo() {
         return titulo;
     }
-
-    public List<Questao> getQuestoes() {
-        return questoes;
-    }
-
-    public LocalDateTime getDataCriacao() {
-        return dataCriacao;
-    }
-
-    public Disciplina getDisciplina() {
-        return disciplina;
-    }
-
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
+    public List<Questao> getQuestoes() {
+        return questoes;
     }
-
     public void setQuestoes(List<Questao> questoes) {
         this.questoes = questoes;
     }
-
-    public void removeQuestoes() {
-        this.questoes.clear();
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
+    }
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 }

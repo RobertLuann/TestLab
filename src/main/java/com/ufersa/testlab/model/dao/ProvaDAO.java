@@ -2,59 +2,115 @@ package com.ufersa.testlab.model.dao;
 
 import com.ufersa.testlab.model.entities.Prova;
 import jakarta.persistence.*;
-
 import java.util.List;
 
 public class ProvaDAO {
 
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestLab");
+    private final EntityManagerFactory emf;
 
-    private final EntityManager em = emf.createEntityManager();
-
-    public ProvaDAO() {}
+    public ProvaDAO() {
+        this.emf = Persistence.createEntityManagerFactory("TestLab");
+    }
 
     public void cadastrarProva(Prova prova) {
-        em.getTransaction().begin();
-        em.persist(prova);
-        em.getTransaction().commit();
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            em.persist(prova);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     public void deletarProva(Prova prova) {
-        em.getTransaction().begin();
-        em.remove(prova);
-        em.getTransaction().commit();
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            Prova managedProva = em.merge(prova);
+            em.remove(managedProva);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     public Prova buscarPorId(Long id) {
-        return em.find(Prova.class, id);
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(Prova.class, id);
+        } finally {
+            em.close();
+        }
     }
 
     public Prova buscarPorTitulo(String titulo) {
+        EntityManager em = emf.createEntityManager();
         try {
-            return em.createQuery("SELECT p FROM Prova p WHERE p.titulo = :titulo", Prova.class)
-                    .setParameter("titulo", titulo)
-                    .getSingleResult();
-        } catch(NoResultException e) {
+            TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p WHERE p.titulo = :titulo", Prova.class);
+            query.setParameter("titulo", titulo);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
             return null;
+        } finally {
+            em.close();
         }
     }
 
     public List<Prova> buscarPorDisciplina(String codigoDisciplina) {
-        return em.createQuery(
-                        "SELECT p FROM Prova p WHERE p.disciplina.codigo = :codigo", Prova.class)
-                .setParameter("codigo", codigoDisciplina)
-                .getResultList();
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p WHERE p.disciplina.codigo = :codigo", Prova.class);
+            query.setParameter("codigo", codigoDisciplina);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
     public List<Prova> listarTodas() {
-        String jpql = "SELECT p FROM Prova p";
-        TypedQuery<Prova> query = em.createQuery(jpql, Prova.class);
-        return query.getResultList();
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p", Prova.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
     }
 
-    public void atualizarProva(Prova prova) {
-        em.getTransaction().begin();
-        em.merge(prova);
-        em.getTransaction().commit();
+    public Prova atualizarProva(Prova prova) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            Prova updatedProva = em.merge(prova);
+            transaction.commit();
+            return updatedProva;
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void close() {
+        if (this.emf != null && this.emf.isOpen()) {
+            this.emf.close();
+        }
     }
 }

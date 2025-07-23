@@ -30,7 +30,7 @@ public class UsuarioDAO {
                     .getSingleResult();
 
         } catch (NoResultException e) {
-            System.out.println("Email ja esta sendo utilizado!");
+            System.out.println("Usuario nao encontrado.");
         }
         return usuario;
     }

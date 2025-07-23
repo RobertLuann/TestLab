@@ -1,44 +1,116 @@
 package com.ufersa.testlab.model.dao;
 
 import com.ufersa.testlab.model.entities.Prova;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
-import jakarta.persistence.TypedQuery;
+import jakarta.persistence.*;
 import java.util.List;
 
 public class ProvaDAO {
 
-    private EntityManager em;
+    private final EntityManagerFactory emf;
 
-    public ProvaDAO(EntityManager em) {
-        this.em = em;
+    public ProvaDAO() {
+        this.emf = Persistence.createEntityManagerFactory("TestLab");
     }
 
-    public Prova salvar(Prova prova) {
-        return em.merge(prova);
+    public void cadastrarProva(Prova prova) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            em.persist(prova);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
-    public void excluir(Prova prova) {
-        em.remove(prova);
+    public void deletarProva(Prova prova) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            Prova managedProva = em.merge(prova);
+            em.remove(managedProva);
+            transaction.commit();
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
     }
 
     public Prova buscarPorId(Long id) {
-        return em.find(Prova.class, id);
+        EntityManager em = emf.createEntityManager();
+        try {
+            return em.find(Prova.class, id);
+        } finally {
+            em.close();
+        }
     }
 
     public Prova buscarPorTitulo(String titulo) {
+        EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p WHERE p.titulo = :titulo", Prova.class);
             query.setParameter("titulo", titulo);
             return query.getSingleResult();
         } catch (NoResultException e) {
-            return null; // Retorna nulo se não encontrar o que se espera
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Prova> buscarPorDisciplina(String codigoDisciplina) {
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p WHERE p.disciplina.codigo = :codigo", Prova.class);
+            query.setParameter("codigo", codigoDisciplina);
+            return query.getResultList();
+        } finally {
+            em.close();
         }
     }
 
     public List<Prova> listarTodas() {
-        String jpql = "SELECT p FROM Prova p";
-        TypedQuery<Prova> query = em.createQuery(jpql, Prova.class);
-        return query.getResultList();
+        EntityManager em = emf.createEntityManager();
+        try {
+            TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p", Prova.class);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Prova atualizarProva(Prova prova) {
+        EntityManager em = emf.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        try {
+            transaction.begin();
+            Prova updatedProva = em.merge(prova);
+            transaction.commit();
+            return updatedProva;
+        } catch (RuntimeException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void close() {
+        if (this.emf != null && this.emf.isOpen()) {
+            this.emf.close();
+        }
     }
 }

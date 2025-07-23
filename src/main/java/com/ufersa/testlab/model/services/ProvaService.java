@@ -1,101 +1,95 @@
-package com.ufersa.testlab.model.service;
+package com.ufersa.testlab.model.services;
 
 import com.ufersa.testlab.model.dao.ProvaDAO;
+import com.ufersa.testlab.model.entities.Disciplina;
 import com.ufersa.testlab.model.entities.Prova;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
+
 import java.util.List;
 
 public class ProvaService {
 
-    private EntityManagerFactory factory;
+    private final ProvaDAO provaDAO = new ProvaDAO();
 
-    public ProvaService(EntityManagerFactory factory) {
-        this.factory = factory;
-    }
+    public ProvaService() {}
 
-    public Prova criarProva(Prova prova) throws Exception {
-        // Validação de Regra
+    public void cadastrarProva(Prova prova) {
         if (prova.getTitulo() == null || prova.getTitulo().trim().isEmpty()) {
-            throw new Exception("O título da prova é obrigatório.");
+            throw new IllegalArgumentException("O título da prova é obrigatório.");
+        }
+        if (prova.getQuestoes() == null || prova.getQuestoes().isEmpty()) {
+            throw new IllegalArgumentException("Precisa ter pelo menos uma questão.");
         }
 
-        EntityManager em = factory.createEntityManager();
-        ProvaDAO dao = new ProvaDAO(em);
+        buscarPorTituloClasse(prova.getTitulo());
 
-        // Validação de Unicidade
-        if (dao.buscarPorTitulo(prova.getTitulo()) != null) {
-            em.close(); // Fecha o entity manager antes de lançar a exceção
-            throw new Exception("Já existe uma prova com o título: '" + prova.getTitulo() + "'");
-        }
-
-        em.close(); // Fecha o EM usado para a consulta
-
-        try {
-            em = factory.createEntityManager();
-            dao = new ProvaDAO(em);
-
-            em.getTransaction().begin();
-            Prova provaSalva = dao.salvar(prova);
-            em.getTransaction().commit();
-
-            return provaSalva;
-        } catch (Exception e) {
-            if (em != null && em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+        provaDAO.cadastrarProva(prova);
     }
-
 
     public void excluirProva(Long id) {
-        EntityManager em = null;
-        try {
-            em = factory.createEntityManager();
-            ProvaDAO dao = new ProvaDAO(em);
-
-            em.getTransaction().begin();
-            Prova prova = dao.buscarPorId(id); // Busca dentro da mesma transação
-            if (prova != null) {
-                dao.excluir(prova);
-            }
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            if (em != null && em.getTransaction().isActive()) {
-                em.getTransaction().rollback();
-            }
-            throw e;
-        } finally {
-            if (em != null) {
-                em.close();
-            }
-        }
+        Prova prova = buscarProvaPorId(id);
+        provaDAO.deletarProva(prova);
     }
 
     public Prova buscarProvaPorId(Long id) {
-        EntityManager em = factory.createEntityManager();
-        try {
-            return new ProvaDAO(em).buscarPorId(id);
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        Prova prova = provaDAO.buscarPorId(id);
+        if (prova == null) {
+            throw new EntityNotFoundException("Prova com ID " + id + " não existe.");
         }
+        return prova;
     }
 
     public List<Prova> listarTodasProvas() {
-        EntityManager em = factory.createEntityManager();
-        try {
-            return new ProvaDAO(em).listarTodas();
-        } finally {
-            if (em != null) {
-                em.close();
-            }
+        List<Prova> provas = provaDAO.listarTodas();
+        if (provas.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma prova encontrada.");
         }
+        return provas;
+    }
+
+    public Prova buscarPorTitulo(String titulo) {
+        Prova prova = provaDAO.buscarPorTitulo(titulo);
+        if (prova == null) {
+            throw new EntityNotFoundException("Prova com o título '" + titulo + "' não existe.");
+        }
+        return prova;
+    }
+
+    private void buscarPorTituloClasse(String titulo) {
+        Prova prova = provaDAO.buscarPorTitulo(titulo);
+        if (prova != null) {
+            throw new EntityExistsException("Já tem uma prova com esse titulo.");
+        }
+    }
+
+    public List<Prova> buscarPorDisciplina(Disciplina disciplina) {
+        List<Prova> provas = provaDAO.buscarPorDisciplina(disciplina.getCodigo());
+        if (provas.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma prova encontrada para a disciplina informada.");
+        }
+        return provas;
+    }
+
+    public Prova atualizarProva(Prova prova) {
+        buscarProvaPorId(prova.getId());
+
+        if (prova.getTitulo() == null || prova.getTitulo().trim().isEmpty()) {
+            throw new IllegalArgumentException("O título da prova é obrigatório.");
+        }
+        if (prova.getQuestoes() == null || prova.getQuestoes().isEmpty()) {
+            throw new IllegalArgumentException("Precisa ter pelo menos uma questão.");
+        }
+
+        Prova provaExistente = provaDAO.buscarPorTitulo(prova.getTitulo());
+        if (provaExistente != null && !provaExistente.getId().equals(prova.getId())) {
+            throw new EntityExistsException("Já existe outra prova com esse titulo.");
+        }
+
+        return provaDAO.atualizarProva(prova);
+    }
+
+    public void close() {
+        provaDAO.close();
     }
 }

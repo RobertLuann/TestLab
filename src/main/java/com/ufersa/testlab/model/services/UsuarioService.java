@@ -53,6 +53,16 @@ public class UsuarioService {
         return usuarioDAO.buscarPorEmail(email);
     }
 
+    public Usuario autenticar(String email, String senhaPura) {
+        Usuario usuario = usuarioDAO.buscarPorEmail(email);
+
+        if (senhaPura.equals(usuario.getSenha())) {
+            return usuario;
+        }
+
+        return null;
+    }
+
     public List<Usuario> listarUsuarios() {
         List<Usuario> usuarios = usuarioDAO.listarUsuarios();
         if (usuarios.isEmpty()) {

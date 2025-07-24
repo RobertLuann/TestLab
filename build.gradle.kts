@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id ("application")
+    id ("org.openjfx.javafxplugin") version "0.1.0"
 }
 
 group = "com.ufersa.testlab"
@@ -7,6 +9,10 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass.set("com.ufersa.testlab.Main")
 }
 
 dependencies {
@@ -24,6 +30,11 @@ dependencies {
 
     // https://mvnrepository.com/artifact/commons-validator/commons-validator
     implementation("commons-validator:commons-validator:1.9.0")
+}
+
+javafx {
+    version = "21"
+    modules = listOf("javafx.controls", "javafx.fxml")
 }
 
 tasks.test {

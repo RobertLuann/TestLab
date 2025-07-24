@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
 
 import java.io.IOException;
 
@@ -35,31 +36,43 @@ public class LoginController {
 
         if (usuarioAutenticado != null) {
             System.out.println("Login bem-sucedido para: " + usuarioAutenticado.getNome());
-            navigateToDashboard(event);
+            navigateToDashboard(event, usuarioAutenticado);
         } else {
             showAlert(Alert.AlertType.ERROR, "Erro de Login", "Email ou senha inválidos.");
         }
     }
 
     @FXML
-    void handleCadastroLinkAction(ActionEvent event) {
+    void handleCadastroLinkAction(ActionEvent event) throws IOException {
+        Parent cadastroRoot = FXMLLoader.load(getClass().getResource("/com/ufersa/testlab/views/CadastroView.fxml"));
 
-        System.out.println("Abrindo tela de cadastro...");
+        Stage stage = new Stage();
+        stage.setTitle("Cadastro de Novo Usuário");
+        stage.setScene(new Scene(cadastroRoot));
+
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(cadastroLink.getScene().getWindow());
+
+        stage.showAndWait();
     }
 
-    private void navigateToDashboard(ActionEvent event) {
+    private void navigateToDashboard(ActionEvent event, Usuario usuarioAutenticado) {
         try {
-            Parent dashboardRoot = FXMLLoader.load(getClass().getResource("/com/ufersa/testlab/views/DashboardView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ufersa/testlab/views/DashboardView.fxml"));
+            Parent dashboardRoot = loader.load();
+
+            DashboardController controller = loader.getController();
+
+            controller.initData(usuarioAutenticado);
 
             Stage currentStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-
             currentStage.setScene(new Scene(dashboardRoot));
-            currentStage.setTitle("Dashboard");
+            currentStage.setTitle("Dashboard - TestLab");
+            currentStage.setResizable(true);
             currentStage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Erro", "Não foi possível carregar a tela principal.");
+            showAlert(Alert.AlertType.ERROR, "Erro de Navegação", "Não foi possível carregar o dashboard.");
         }
     }
 

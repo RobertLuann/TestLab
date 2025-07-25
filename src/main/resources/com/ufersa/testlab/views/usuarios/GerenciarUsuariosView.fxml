@@ -10,7 +10,7 @@
 
 <?import javafx.scene.layout.Pane?>
 <?import java.lang.String?>
-<BorderPane stylesheets="@../styles/gerenciar-usuarios-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.GerenciarUsuariosController">
+<BorderPane stylesheets="@../../styles/gerenciar-usuarios-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.usuarios.GerenciarUsuariosController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>

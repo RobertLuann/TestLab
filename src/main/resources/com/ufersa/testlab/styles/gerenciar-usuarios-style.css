@@ -1,24 +1,20 @@
-/* Importa a fonte Poppins, garantindo consistência */
 @font-face {
     font-family: 'Poppins';
     src: url('../fonts/Poppins-Regular.ttf');
 }
 
-/* Define a fonte padrão para toda a tela */
 .root {
     -fx-font-family: "Poppins";
 }
 
-/* Estilo para o título "Gerenciamento de Usuários" */
 .view-title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
     -fx-text-fill: #333333;
 }
 
-/* Estilo para o botão "Cadastrar Novo Usuário" */
 .add-button {
-    -fx-background-color: #5a78d1; /* Azul de destaque */
+    -fx-background-color: #5a78d1;
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-font-weight: bold;
@@ -30,23 +26,19 @@
     -fx-background-color: #4a68c1;
 }
 
-/* =========== ESTILOS DA TABELA =========== */
 
-/* Estilo geral da tabela */
 .table-view {
     -fx-border-color: #E0E0E0;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
 }
 
-/* Fundo do cabeçalho da tabela */
 .table-view .column-header-background {
     -fx-background-color: #f4f4f4;
-    -fx-background-radius: 8 8 0 0; /* Arredonda só os cantos superiores */
+    -fx-background-radius: 8 8 0 0;
     -fx-background-insets: 0 0 0 0;
 }
 
-/* Células do cabeçalho (Nome, Email, etc.) */
 .table-view .column-header {
     -fx-background-color: transparent;
     -fx-font-size: 13px;
@@ -54,30 +46,26 @@
     -fx-text-fill: #333333;
 }
 
-/* Células de dados da tabela */
 .table-view .table-cell {
-    -fx-padding: 0.8em; /* Aumenta o espaçamento interno */
+    -fx-padding: 0.8em;
     -fx-border-color: transparent;
     -fx-font-size: 13px;
 }
 
-/* Cor de fundo para as linhas ímpares, para melhor legibilidade */
 .table-view .table-row-cell:odd{
     -fx-background-color: #fafafa;
 }
 
-/* Remove a cor de fundo padrão ao selecionar uma linha */
 .table-view .table-row-cell:selected {
     -fx-background-color: #d8deeb;
 }
 
-/* Estilo para os botões de ação DENTRO da tabela */
 .action-button {
     -fx-font-size: 12px;
     -fx-text-fill: white;
     -fx-background-radius: 5;
     -fx-alignment: CENTER;
-    -fx-pref-width: 70px; /* Garante que os botões tenham a mesma largura */
+    -fx-pref-width: 70px;
     -fx-cursor: hand;
 }
 
@@ -86,14 +74,14 @@
 }
 
 .edit-button {
-    -fx-background-color: #5a78d1; /* Azul */
+    -fx-background-color: #5a78d1;
 }
 .edit-button:hover {
     -fx-background-color: #4a68c1;
 }
 
 .remove-button {
-    -fx-background-color: #d15a5a; /* Vermelho */
+    -fx-background-color: #d15a5a;
 }
 .remove-button:hover {
     -fx-background-color: #c14a4a;

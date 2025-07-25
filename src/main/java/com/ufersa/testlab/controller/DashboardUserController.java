@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import java.io.IOException;
 
-public class DashboardController {
+public class DashboardUserController {
 
     @FXML private StackPane contentArea;
     @FXML private Label usuarioLabel;

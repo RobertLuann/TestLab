@@ -8,10 +8,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/dashboard-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.DashboardController">
+<BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/dashboard-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.DashboardAdminController">
 
     <left>
-        <VBox fx:id="sidebar" prefWidth="220.0" spacing="10.0" styleClass="sidebar" BorderPane.alignment="CENTER">            <padding>
+        <VBox styleClass="sidebar" prefWidth="220.0" spacing="10.0">
+            <padding>
                 <Insets bottom="20.0" left="10.0" right="10.0" top="10.0" />
             </padding>
 
@@ -19,16 +20,19 @@
             <Label fx:id="usuarioLabel" styleClass="user-label" text="Usuário: ..." />
 
             <Button onAction="#handleEditarProvas" styleClass="nav-button" text="Editar Provas" />
-            <Button onAction="#handleVerQuestoes" styleClass="nav-button" text="Ver Questões" />
+            <Button onAction="#handleEditarDisciplinas" styleClass="nav-button" text="Editar Disciplinas" />
+            <Button onAction="#handleEditarQuestoes" styleClass="nav-button" text="Editar Questões" />
 
             <Pane VBox.vgrow="ALWAYS" />
 
             <Button onAction="#handleGerarProva" styleClass="cta-button" text="Gerar Prova" />
+            <Button onAction="#handleCadastrarUsuario" styleClass="nav-button" text="Cadastrar Usuário" />
+            <Button onAction="#handleEditarUsuario" styleClass="nav-button" text="Editar Usuário" />
         </VBox>
     </left>
 
     <center>
-        <StackPane fx:id="contentArea" style="-fx-background-color: #f4f4f4;" BorderPane.alignment="CENTER" />
+        <StackPane fx:id="contentArea" style="-fx-background-color: #f4f4f4;" />
     </center>
 
 </BorderPane>

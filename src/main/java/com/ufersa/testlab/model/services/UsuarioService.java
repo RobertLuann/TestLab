@@ -64,6 +64,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> listarUsuarios() {
+        usuarioDAO.limparCache();
         List<Usuario> usuarios = usuarioDAO.listarUsuarios();
         if (usuarios.isEmpty()) {
             throw new EntityNotFoundException("Nenhum usuário cadastrado.");

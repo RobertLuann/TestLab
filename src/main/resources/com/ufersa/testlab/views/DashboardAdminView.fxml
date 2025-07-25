@@ -26,8 +26,7 @@
             <Pane VBox.vgrow="ALWAYS" />
 
             <Button onAction="#handleGerarProva" styleClass="cta-button" text="Gerar Prova" />
-            <Button onAction="#handleCadastrarUsuario" styleClass="nav-button" text="Cadastrar Usuário" />
-            <Button onAction="#handleEditarUsuario" styleClass="nav-button" text="Editar Usuário" />
+            <Button onAction="#handleGerenciarUsuarios" styleClass="nav-button" text="Gerenciar Usuários" />
         </VBox>
     </left>
 

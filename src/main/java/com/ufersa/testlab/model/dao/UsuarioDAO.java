@@ -50,4 +50,8 @@ public class UsuarioDAO {
         em.remove(usuario);
         em.getTransaction().commit();
     }
+
+    public void limparCache() {
+        em.clear();
+    }
 }

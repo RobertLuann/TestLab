@@ -14,7 +14,6 @@ public class DashboardUserController {
     @FXML private Label usuarioLabel;
 
     public void initData(Usuario usuario) {
-        // Exemplo de como usar os dados do usuário logado
         usuarioLabel.setText("Usuário: " + usuario.getNome());
     }
 
@@ -42,7 +41,6 @@ public class DashboardUserController {
             contentArea.getChildren().setAll(view);
         } catch (IOException e) {
             e.printStackTrace();
-            // O ideal é mostrar um alerta de erro para o usuário aqui.
         }
     }
 }

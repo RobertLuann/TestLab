@@ -4,11 +4,8 @@ import com.ufersa.testlab.model.entities.Usuario;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -16,10 +13,6 @@ public class DashboardAdminController {
 
     @FXML private StackPane contentArea;
     @FXML private Label usuarioLabel;
-
-    /**
-     * Recebe os dados do usuário (Admin) que fez login.
-     */
     public void initData(Usuario usuario) {
         usuarioLabel.setText("Usuário: " + usuario.getNome());
     }
@@ -48,33 +41,11 @@ public class DashboardAdminController {
     }
 
     @FXML
-    private void handleCadastrarUsuario() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ufersa/testlab/views/CadastroView.fxml"));
-            Parent root = loader.load();
-
-            Stage cadastroStage = new Stage();
-            cadastroStage.setTitle("Cadastrar Novo Usuário");
-            cadastroStage.setScene(new Scene(root));
-
-            cadastroStage.initOwner(contentArea.getScene().getWindow());
-
-            cadastroStage.initModality(Modality.APPLICATION_MODAL);
-
-            cadastroStage.showAndWait();
-
-            System.out.println("Janela de cadastro fechada.");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void handleGerenciarUsuarios() {
+        System.out.println("Admin: Carregando tela de Gerenciamento de Usuários...");
+        loadView("/com/ufersa/testlab/views/usuarios/GerenciarUsuariosView.fxml");
     }
 
-    @FXML
-    private void handleEditarUsuario() {
-        System.out.println("Admin: Carregando tela de Edição de Usuário...");
-        // loadView("/com/ufersa/testlab/views/usuarios/EdicaoUsuarioView.fxml");
-    }
 
     private void loadView(String fxmlPath) {
         try {

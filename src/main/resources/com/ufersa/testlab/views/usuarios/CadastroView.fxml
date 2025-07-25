@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="rootPane" alignment="CENTER" prefHeight="550.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #f4f4f4;" stylesheets="@../styles/login-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.CadastroController">
+<VBox fx:id="rootPane" alignment="CENTER" prefHeight="550.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #f4f4f4;" stylesheets="@../../styles/login-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.usuarios.CadastroController">
 
     <Label styleClass="title-label" text="Cadastrar Usuário" />
 

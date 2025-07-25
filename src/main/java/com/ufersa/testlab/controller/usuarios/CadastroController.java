@@ -1,4 +1,4 @@
-package com.ufersa.testlab.controller;
+package com.ufersa.testlab.controller.usuarios;
 
 import com.ufersa.testlab.model.services.UsuarioService;
 import javafx.collections.FXCollections;
@@ -12,7 +12,7 @@ public class CadastroController {
     @FXML private TextField nomeField;
     @FXML private TextField emailField;
     @FXML private PasswordField senhaField;
-    @FXML private ComboBox<String> adminComboBox; // Campo novo
+    @FXML private ComboBox<String> adminComboBox;
     @FXML private Button cadastrarButton;
 
     private final UsuarioService usuarioService = new UsuarioService();
@@ -29,7 +29,6 @@ public class CadastroController {
         String email = emailField.getText();
         String senha = senhaField.getText();
         boolean tipoUsuario;
-        // Pega o valor do ComboBox
         tipoUsuario = !adminComboBox.getValue().equals("Não");
 
         if (nome.isBlank() || email.isBlank() || senha.isBlank()) {
@@ -38,7 +37,6 @@ public class CadastroController {
         }
 
         try {
-            // Chama o serviço com o novo parâmetro
             usuarioService.cadastrarUsuario(nome, email, senha, tipoUsuario);
 
             showAlert(Alert.AlertType.INFORMATION, "Sucesso", "Usuário cadastrado com sucesso!");
@@ -57,7 +55,6 @@ public class CadastroController {
     }
 
     private void closeWindow() {
-        // Pega a janela (Stage) atual a partir de qualquer componente dentro dela, como o botão
         Stage stage = (Stage) cadastrarButton.getScene().getWindow();
         stage.close();
     }

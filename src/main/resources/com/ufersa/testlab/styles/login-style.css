@@ -14,11 +14,12 @@
 
 .root {
     -fx-font-family: "Poppins";
-}2
+}
 
 /* Estilo para o título principal "TestLab" */
 .title-label {
-    -fx-font-family: "Arial"; /* Use uma fonte que você tenha, ou uma mais estilizada */
+    -fx-font-family: 'Poppins';
+    -fx-font-weight: bold;
     -fx-font-size: 48px;
     -fx-text-fill: #333333;
 }
@@ -67,14 +68,4 @@
 .login-button:hover {
     -fx-text-fill: white; /* Texto fica branco */
     -fx-underline: true;
-}
-
-/* Link de cadastro */
-.hyperlink {
-    -fx-text-fill: #5a78d1; /* Cor do link */
-    -fx-font-size: 14px;
-}
-
-.hyperlink:visited {
-    -fx-text-fill: #5a78d1;
 }

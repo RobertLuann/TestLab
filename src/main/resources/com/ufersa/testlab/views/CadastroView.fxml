@@ -2,17 +2,17 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<VBox fx:id="rootPane" alignment="CENTER" prefHeight="450.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #f4f4f4;" stylesheets="@../styles/login-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.CadastroController">
+<VBox fx:id="rootPane" alignment="CENTER" prefHeight="550.0" prefWidth="600.0" spacing="20.0" style="-fx-background-color: #f4f4f4;" stylesheets="@../styles/login-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.CadastroController">
 
-    <Label styleClass="title-label" text="TestLab" />
+    <Label styleClass="title-label" text="Cadastrar Usuário" />
 
-    <VBox fx:id="formContainer" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="300.0" spacing="10.0" styleClass="login-container">
+    <VBox fx:id="formContainer" alignment="TOP_LEFT" prefWidth="300.0" spacing="10.0" styleClass="login-container">
         <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
         </padding>
@@ -25,6 +25,9 @@
 
         <Label styleClass="form-label" text="Senha:" />
         <PasswordField fx:id="senhaField" styleClass="text-field" />
+
+        <Label styleClass="form-label" text="Usuário Administrador?" />
+        <ComboBox fx:id="adminComboBox" prefWidth="300.0" styleClass="combo-box" />
 
         <VBox alignment="CENTER_RIGHT">
             <Button fx:id="cadastrarButton" onAction="#handleCadastroButtonAction" styleClass="login-button" text="cadastrar" />

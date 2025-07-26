@@ -16,15 +16,27 @@
             <padding><Insets bottom="20.0" /></padding>
         </HBox>
     </top>
+
     <center>
         <TableView fx:id="tabelaQuestoes" BorderPane.alignment="CENTER">
             <columns>
-                <TableColumn fx:id="colunaEnunciado" prefWidth="500.0" text="Enunciado" />
-                <TableColumn fx:id="colunaTipo" prefWidth="150.0" text="Tipo" />
-                <TableColumn fx:id="colunaEditar" minWidth="80.0" text="Editar" />
-                <TableColumn fx:id="colunaRemover" minWidth="80.0" text="Remover" />
+                <TableColumn fx:id="colunaEnunciado" text="Enunciado" />
+                <TableColumn fx:id="colunaTipo" text="Tipo" />
+                <TableColumn fx:id="colunaEditar" text="Editar" />
+                <TableColumn fx:id="colunaRemover" text="Remover" />
             </columns>
-            <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
         </TableView>
     </center>
+
+    <bottom>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <BorderPane.margin><Insets top="20.0" /></BorderPane.margin>
+            <content>
+                <VBox fx:id="detailsPane" spacing="10.0" styleClass="details-pane">
+                    <padding><Insets bottom="15.0" left="15.0" right="15.0" top="15.0" /></padding>
+                    <Label styleClass="details-prompt" text="Selecione uma questão na tabela para ver os detalhes." />
+                </VBox>
+            </content>
+        </ScrollPane>
+    </bottom>
 </BorderPane>

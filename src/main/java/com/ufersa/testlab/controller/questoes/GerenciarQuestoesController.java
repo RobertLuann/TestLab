@@ -1,5 +1,6 @@
 package com.ufersa.testlab.controller.questoes;
 
+import com.ufersa.testlab.model.entities.Alternativa;
 import com.ufersa.testlab.model.entities.Questao;
 import com.ufersa.testlab.model.entities.QuestaoMultiplaEscolha;
 import com.ufersa.testlab.model.entities.QuestaoDissertativa;
@@ -10,9 +11,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -26,6 +31,7 @@ public class GerenciarQuestoesController {
     @FXML private TableColumn<Questao, String> colunaTipo;
     @FXML private TableColumn<Questao, Void> colunaEditar;
     @FXML private TableColumn<Questao, Void> colunaRemover;
+    @FXML private VBox detailsPane;
 
     private final QuestaoService questaoService = new QuestaoService();
 
@@ -33,16 +39,26 @@ public class GerenciarQuestoesController {
     public void initialize() {
         colunaEnunciado.setCellValueFactory(new PropertyValueFactory<>("enunciado"));
 
-        // Lógica para exibir "Dissertativa" ou "Optativa"
         colunaTipo.setCellValueFactory(cellData -> {
             Questao questao = cellData.getValue();
             String tipo = (questao instanceof QuestaoMultiplaEscolha) ? "Múltipla Escolha" : "Dissertativa";
             return new SimpleStringProperty(tipo);
         });
 
+        tabelaQuestoes.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showQuestaoDetails(newValue)
+        );
+
+        colunaEnunciado.prefWidthProperty().bind(tabelaQuestoes.widthProperty().multiply(0.60));
+        colunaTipo.prefWidthProperty().bind(tabelaQuestoes.widthProperty().multiply(0.15));
+        colunaEditar.prefWidthProperty().bind(tabelaQuestoes.widthProperty().multiply(0.12));
+        colunaRemover.prefWidthProperty().bind(tabelaQuestoes.widthProperty().multiply(0.12));
+
         carregarQuestoes();
-        // configurarBotaoEditar(); // Faremos a seguir
-        // configurarBotaoRemover(); // Faremos a seguir
+
+        carregarQuestoes();
+        // configurarBotaoEditar();
+        // configurarBotaoRemover();
     }
 
     private void carregarQuestoes() {
@@ -61,10 +77,80 @@ public class GerenciarQuestoesController {
             stage.initOwner(tabelaQuestoes.getScene().getWindow());
             stage.showAndWait();
 
-            // Atualiza a tabela após o cadastro
             carregarQuestoes();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void showQuestaoDetails(Questao questao) {
+        detailsPane.getChildren().clear();
+
+        String cssPath = getClass().getResource("/com/ufersa/testlab/styles/detalhes-questao-style.css").toExternalForm();
+        detailsPane.getStylesheets().add(cssPath);
+
+        if (questao != null) {
+            GridPane grid = new GridPane();
+            grid.setHgap(10);
+            grid.setVgap(8);
+
+            Label keyCodigo = new Label("Código:");
+            keyCodigo.getStyleClass().add("details-key");
+            grid.add(keyCodigo, 0, 0);
+            grid.add(new Label(questao.getCodigo()), 1, 0);
+
+            Label keyDisciplina = new Label("Disciplina:");
+            keyDisciplina.getStyleClass().add("details-key");
+            grid.add(keyDisciplina, 0, 1);
+            grid.add(new Label(questao.getDisciplina()), 1, 1);
+
+            Label keyAssunto = new Label("Assunto:");
+            keyAssunto.getStyleClass().add("details-key");
+            grid.add(keyAssunto, 0, 2);
+            grid.add(new Label(questao.getAssunto()), 1, 2);
+
+            Label keyDificuldade = new Label("Dificuldade:");
+            keyDificuldade.getStyleClass().add("details-key");
+            grid.add(keyDificuldade, 0, 3);
+            grid.add(new Label(String.valueOf(questao.getDificuldade())), 1, 3);
+
+            detailsPane.getChildren().add(grid);
+
+            if (questao instanceof QuestaoDissertativa) {
+                QuestaoDissertativa qd = (QuestaoDissertativa) questao;
+
+                Label subheader = new Label("Gabarito");
+                subheader.getStyleClass().add("details-subheader");
+
+                Label resposta = new Label(qd.getResposta());
+                resposta.setWrapText(true);
+
+                detailsPane.getChildren().addAll(new Separator(), subheader, resposta);
+
+            } else if (questao instanceof QuestaoMultiplaEscolha qme) {
+
+                Label subheader = new Label("Alternativas");
+                subheader.getStyleClass().add("details-subheader");
+
+                VBox alternativasVBox = new VBox(5);
+
+                for (int i = 0; i < qme.getAlternativas().size(); i++) {
+                    Alternativa alt = qme.getAlternativas().get(i);
+                    String prefixo = (char) ('A' + i) + ") ";
+                    Label altLabel = new Label(prefixo + alt.getTexto());
+
+                    if (alt.getCorreta()) {
+                        altLabel.getStyleClass().add("correct-alternative");
+                    }
+                    alternativasVBox.getChildren().add(altLabel);
+                }
+
+                detailsPane.getChildren().addAll(new Separator(), subheader, alternativasVBox);
+            }
+        } else {
+            Label prompt = new Label("Selecione uma questão na tabela para ver os detalhes.");
+            prompt.getStyleClass().add("details-prompt");
+            detailsPane.getChildren().add(prompt);
         }
     }
 }

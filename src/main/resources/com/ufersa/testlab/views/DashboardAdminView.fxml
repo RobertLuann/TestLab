@@ -21,7 +21,7 @@
 
             <Button onAction="#handleEditarProvas" styleClass="nav-button" text="Editar Provas" />
             <Button onAction="#handleEditarDisciplinas" styleClass="nav-button" text="Editar Disciplinas" />
-            <Button onAction="#handleEditarQuestoes" styleClass="nav-button" text="Editar Questões" />
+            <Button onAction="#handleGerenciarQuestoes" styleClass="nav-button" text="Gerenciar Questões" />
 
             <Pane VBox.vgrow="ALWAYS" />
 

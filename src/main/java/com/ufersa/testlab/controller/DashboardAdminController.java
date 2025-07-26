@@ -30,9 +30,9 @@ public class DashboardAdminController {
     }
 
     @FXML
-    private void handleEditarQuestoes() {
-        System.out.println("Admin: Carregando tela de Edição de Questões...");
-        // loadView("/com/ufersa/testlab/views/questoes/AdminQuestoesView.fxml");
+    private void handleGerenciarQuestoes() {
+        System.out.println("Admin: Carregando tela de Gerenciar Questões...");
+        loadView("/com/ufersa/testlab/views/questoes/GerenciarQuestoesView.fxml");
     }
 
     @FXML

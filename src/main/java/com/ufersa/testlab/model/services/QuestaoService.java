@@ -75,11 +75,7 @@ public class QuestaoService {
     }
 
     public List<Questao> listarQuestoes() {
-        List<Questao> questoes = questaoDAO.listarTodas();
-        if (questoes.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma questão encontrada.");
-        }
-        return questoes;
+        return questaoDAO.listarTodas();
     }
 
     public void atualizarQuestaoDissertativa(String codigo, String enunciado, String codigoDisciplina, String assunto, Long dificuldade, String resposta) {

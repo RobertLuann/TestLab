@@ -1,6 +1,7 @@
 package com.ufersa.testlab.model.entities;
 
 import jakarta.persistence.*;
+import org.apache.commons.validator.routines.EmailValidator;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -30,12 +31,25 @@ public abstract class Usuario {
     }
 
     public void setNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("O nome do usuário não pode ser nulo ou vazio.");
+        }
         this.nome = nome;
     }
     public void setEmail(String email) {
+        if (email == null || email.isBlank()) {
+            throw new IllegalArgumentException("O email não pode ser nulo ou vazio.");
+        }
+
+        if (!EmailValidator.getInstance().isValid(email)) {
+            throw new IllegalArgumentException("O formato do email fornecido é inválido.");
+        }
         this.email = email;
     }
     public void setSenha(String senha) {
+        if (senha == null || senha.isBlank()) {
+            throw new IllegalArgumentException("A senha não pode ser nula ou vazia.");
+        }
         this.senha = senha;
     }
 

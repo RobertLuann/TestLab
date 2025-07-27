@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@../../styles/gerenciar-usuarios-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.questoes.GerenciarQuestoesController">
+    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label styleClass="view-title" text="Gerenciamento de Questões" HBox.hgrow="ALWAYS" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleCadastrar" styleClass="add-button" text="Cadastrar Nova Questão" />
+            </children>
+            <padding><Insets bottom="20.0" /></padding>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="tabelaQuestoes" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="colunaEnunciado" text="Enunciado" />
+                <TableColumn fx:id="colunaTipo" text="Tipo" />
+                <TableColumn fx:id="colunaEditar" text="Editar" />
+                <TableColumn fx:id="colunaRemover" text="Remover" />
+            </columns>
+        </TableView>
+    </center>
+
+    <bottom>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <BorderPane.margin><Insets top="20.0" /></BorderPane.margin>
+            <content>
+                <VBox fx:id="detailsPane" spacing="10.0" styleClass="details-pane">
+                    <padding><Insets bottom="15.0" left="15.0" right="15.0" top="15.0" /></padding>
+                    <Label styleClass="details-prompt" text="Selecione uma questão na tabela para ver os detalhes." />
+                </VBox>
+            </content>
+        </ScrollPane>
+    </bottom>
+</BorderPane>

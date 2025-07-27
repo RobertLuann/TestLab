@@ -33,15 +33,42 @@ public abstract class Questao {
     }
 
     // Setters
-    public void setCodigo(String codigo) { this.codigo = codigo; }
-    public void setEnunciado(String enunciado) { this.enunciado = enunciado; }
-    public void setCodigoDisciplina(String codigoDisciplina) { this.codigoDisciplina = codigoDisciplina; }
-    public void setDisciplina(String codigoDisciplina) { this.codigoDisciplina = codigoDisciplina; }
+    public void setCodigo(String codigo) {
+        if (codigo == null || codigo.isBlank()) {
+            throw new IllegalArgumentException("O código não pode ser nulo ou vazio.");
+        }
+        this.codigo = codigo;
+    }
+    public void setEnunciado(String enunciado) {
+        if (enunciado == null || enunciado.isBlank()) {
+            throw new IllegalArgumentException("O enunciado não pode ser nulo ou vazio.");
+        }
+        this.enunciado = enunciado;
+    }
+    public void setCodigoDisciplina(String codigoDisciplina) {
+        if (codigoDisciplina == null || codigoDisciplina.isBlank()) {
+            throw new IllegalArgumentException("O código da disciplina não pode ser nulo ou vazio.");
+        }
+        this.codigoDisciplina = codigoDisciplina;
+    }
+    public void setDisciplina(String codigoDisciplina) {
+        if (codigoDisciplina == null || codigoDisciplina.isBlank()) {
+            throw new IllegalArgumentException("O código da disciplina não pode ser nulo ou vazio.");
+        }
+        this.codigoDisciplina = codigoDisciplina;
+    }
 
     public void setAssunto(String assunto) {
+        if (assunto == null || assunto.isBlank()) {
+            throw new IllegalArgumentException("O assunto não pode ser nulo ou vazio.");
+        }
         this.assunto = assunto;
     }
+
     public void setDificuldade(Long dificuldade) {
+        if (dificuldade == null) {
+            throw new IllegalArgumentException("A dificuldade não pode ser nulo ou vazio.");
+        }
         this.dificuldade = dificuldade;
     }
 

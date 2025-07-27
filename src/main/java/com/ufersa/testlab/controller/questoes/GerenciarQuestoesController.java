@@ -150,10 +150,11 @@ public class GerenciarQuestoesController {
     }
 
     private void configurarBotaoEditar() {
+        colunaEditar.getStyleClass().add("centered-cell");
         colunaEditar.setCellFactory(param -> new TableCell<>() {
             private final Button btnEditar = new Button("Editar");
             {
-                btnEditar.getStyleClass().addAll("action-button", "edit-button", "centered-cell");
+                btnEditar.getStyleClass().addAll("action-button", "edit-button");
                 btnEditar.setOnAction(event -> {
                     Questao questao = getTableView().getItems().get(getIndex());
                     abrirJanelaDeEdicao(questao);
@@ -173,10 +174,11 @@ public class GerenciarQuestoesController {
     }
 
     private void configurarBotaoRemover() {
+        colunaRemover.getStyleClass().add("centered-cell");
         colunaRemover.setCellFactory(param -> new TableCell<>() {
             private final Button btnRemover = new Button("Remover");
             {
-                btnRemover.getStyleClass().addAll("action-button", "remove-button", "centered-cell");
+                btnRemover.getStyleClass().addAll("action-button", "remove-button");
                 btnRemover.setOnAction(event -> {
                     Questao questao = getTableView().getItems().get(getIndex());
 

@@ -19,7 +19,12 @@ public class QuestaoDissertativa extends Questao {
     }
 
     //setter e getter
-    public void setResposta (String resposta) { this.resposta = resposta; }
+    public void setResposta (String resposta) {
+        if (resposta == null || resposta.isBlank()) {
+            throw new IllegalArgumentException("O código da disciplina não pode ser nulo ou vazio.");
+        }
+        this.resposta = resposta;
+    }
     public String getResposta () { return resposta; }
 
     @Override

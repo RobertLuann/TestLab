@@ -19,6 +19,9 @@ public class Alternativa {
     }
 
     public void setTexto(String texto) {
+        if (texto == null || texto.isBlank()) {
+            throw new IllegalArgumentException("O enunciado da alternativa não pode ser nulo ou vazio.");
+        }
         this.texto = texto;
     }
 

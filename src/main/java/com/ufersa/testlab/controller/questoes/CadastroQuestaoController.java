@@ -82,10 +82,8 @@ public class CadastroQuestaoController {
 
     @FXML
     void handleSalvarQuestao(ActionEvent event) {
-        // Validações básicas (pode adicionar mais)
         String tipo = tipoQuestaoComboBox.getValue();
         if (tipo == null) {
-            // mostrar alerta
             return;
         }
 
@@ -103,11 +101,10 @@ public class CadastroQuestaoController {
                 List<Alternativa> alternativas = new ArrayList<>();
                 long gabaritoIndex = -1;
 
-                // Itera sobre os HBox dentro do container de alternativas
                 for (int i = 0; i < alternativasContainer.getChildren().size(); i++) {
                     HBox hbox = (HBox) alternativasContainer.getChildren().get(i);
-                    TextField tf = (TextField) hbox.getChildren().get(1); // O TextField é o segundo elemento
-                    RadioButton rb = (RadioButton) hbox.getChildren().get(0); // O RadioButton é o primeiro
+                    TextField tf = (TextField) hbox.getChildren().get(1);
+                    RadioButton rb = (RadioButton) hbox.getChildren().get(0);
 
                     Alternativa alt = new Alternativa();
                     alt.setTexto(tf.getText());
@@ -120,19 +117,16 @@ public class CadastroQuestaoController {
                 }
 
                 if (gabaritoIndex == -1) {
-                    // mostrar alerta de que precisa selecionar uma alternativa correta
                     return;
                 }
 
                 questaoService.cadastrarQuestaoMultiplaEscolha(codigo, enunciado, disciplina, assunto, dificuldade, alternativas, gabaritoIndex);
             }
 
-            // Mostrar alerta de sucesso e fechar a janela
             Stage stage = (Stage) codigoField.getScene().getWindow();
             stage.close();
 
         } catch (Exception e) {
-            // Mostrar alerta de erro
             e.printStackTrace();
         }
     }

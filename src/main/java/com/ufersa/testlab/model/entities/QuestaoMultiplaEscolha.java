@@ -30,12 +30,20 @@ public class QuestaoMultiplaEscolha extends Questao {
 
     // Setters com validação
     public void setAlternativa(Alternativa alternativa) {
-        this.alternativas.add(alternativa);
+        if (alternativa != null) {
+            this.alternativas.add(alternativa);
+        } else {
+            throw new IllegalArgumentException("Informe uma alternativa.");
+        }
     }
 
     public void setAlternativas(List<Alternativa> alternativas) {
-        for (Alternativa alternativa: alternativas) {
-            setAlternativa(alternativa);
+        if (!alternativas.isEmpty()) {
+            for (Alternativa alternativa : alternativas) {
+                setAlternativa(alternativa);
+            }
+        } else {
+            throw new IllegalArgumentException("Pelo menos uma alternativa deve ser fornecida.");
         }
     }
 

@@ -4,14 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@/com/ufersa/testlab/styles/cadastro-questao-style.css" fx:controller="com.ufersa.testlab.controller.questoes.CadastroQuestaoController">
+<ScrollPane fitToWidth="true" xmlns="http://javafx.com/javafx/21" stylesheets="@/com/ufersa/testlab/styles/cadastro-questao-style.css" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.questoes.EditarQuestaoController">
     <content>
         <VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: #f4f4f4;" stylesheets="@/com/ufersa/testlab/styles/cadastro-questao-style.css">
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
 
-            <Label styleClass="title-label" text="Cadastrar Nova Questão" />
+            <Label styleClass="title-label" text="Editar Questão" />
 
             <VBox fx:id="formContainer" alignment="TOP_LEFT" prefWidth="600.0" spacing="15.0" styleClass="login-container">
                 <padding>
@@ -40,11 +40,14 @@
                 <VBox fx:id="multiplaEscolhaPane" managed="false" spacing="10.0" visible="false">
                     <Label styleClass="form-label" text="Alternativas:" />
                     <VBox fx:id="alternativasContainer" spacing="8.0" />
-                    <Button onAction="#handleAdicionarAlternativa" styleClass="secondary-button" text="Adicionar Alternativa +" />
+                    <Button onAction="#handleAdicionarAlternativa" text="Adicionar Alternativa +" styleClass="secondary-button" />
                 </VBox>
 
                 <VBox alignment="CENTER_RIGHT">
-                    <Button onAction="#handleSalvarQuestao" styleClass="login-button" text="salvar questão" />
+                    <padding>
+                        <Insets top="20.0" />
+                    </padding>
+                    <Button fx:id="salvarButton" onAction="#handleSalvarAlteracoes" styleClass="login-button" text="salvar alterações" />
                 </VBox>
             </VBox>
         </VBox>

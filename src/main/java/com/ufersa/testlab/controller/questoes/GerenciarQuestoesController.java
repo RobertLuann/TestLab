@@ -1,9 +1,6 @@
 package com.ufersa.testlab.controller.questoes;
 
-import com.ufersa.testlab.model.entities.Alternativa;
-import com.ufersa.testlab.model.entities.Questao;
-import com.ufersa.testlab.model.entities.QuestaoMultiplaEscolha;
-import com.ufersa.testlab.model.entities.QuestaoDissertativa;
+import com.ufersa.testlab.model.entities.*;
 import com.ufersa.testlab.model.services.QuestaoService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -11,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.Separator;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -23,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class GerenciarQuestoesController {
 
@@ -57,8 +52,8 @@ public class GerenciarQuestoesController {
         carregarQuestoes();
 
         carregarQuestoes();
-        // configurarBotaoEditar();
-        // configurarBotaoRemover();
+        configurarBotaoEditar();
+        configurarBotaoRemover();
     }
 
     private void carregarQuestoes() {
@@ -151,6 +146,90 @@ public class GerenciarQuestoesController {
             Label prompt = new Label("Selecione uma questão na tabela para ver os detalhes.");
             prompt.getStyleClass().add("details-prompt");
             detailsPane.getChildren().add(prompt);
+        }
+    }
+
+    private void configurarBotaoEditar() {
+        colunaEditar.setCellFactory(param -> new TableCell<>() {
+            private final Button btnEditar = new Button("Editar");
+            {
+                btnEditar.getStyleClass().addAll("action-button", "edit-button", "centered-cell");
+                btnEditar.setOnAction(event -> {
+                    Questao questao = getTableView().getItems().get(getIndex());
+                    abrirJanelaDeEdicao(questao);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null); // Se a linha for vazia, não mostra nada.
+                } else {
+                    setGraphic(btnEditar); // Se a linha tem dados, mostra o botão.
+                }
+            }
+        });
+    }
+
+    private void configurarBotaoRemover() {
+        colunaRemover.setCellFactory(param -> new TableCell<>() {
+            private final Button btnRemover = new Button("Remover");
+            {
+                btnRemover.getStyleClass().addAll("action-button", "remove-button", "centered-cell");
+                btnRemover.setOnAction(event -> {
+                    Questao questao = getTableView().getItems().get(getIndex());
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmação de Remoção");
+                    alert.setHeaderText("Você tem certeza que deseja remover esta questão?");
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+
+                        questaoService.deletarQuestao(questao.getCodigo());
+
+                        Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                        alert2.setTitle("Confirmação de Remoção");
+                        alert2.setHeaderText("A questão foi removida.");
+
+                        alert2.showAndWait();
+
+                        carregarQuestoes();
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnRemover);
+                }
+            }
+        });
+    }
+
+    private void abrirJanelaDeEdicao(Questao questao) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ufersa/testlab/views/questoes/EditarQuestaoView.fxml"));
+            Parent root = loader.load();
+
+            EditarQuestaoController controller = loader.getController();
+            controller.initData(questao);
+
+            Stage stage = new Stage();
+            stage.setTitle("Editar Questão");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(tabelaQuestoes.getScene().getWindow());
+            stage.showAndWait();
+
+            carregarQuestoes();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

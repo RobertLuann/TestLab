@@ -1,5 +1,6 @@
 package com.ufersa.testlab.model.entities;
 
+import com.ufersa.testlab.exceptions.EmailInvalidoException;
 import jakarta.persistence.*;
 import org.apache.commons.validator.routines.EmailValidator;
 
@@ -42,7 +43,7 @@ public abstract class Usuario {
         }
 
         if (!EmailValidator.getInstance().isValid(email)) {
-            throw new IllegalArgumentException("O formato do email fornecido é inválido.");
+            throw new EmailInvalidoException("O formato do email" + email +  "é inválido.");
         }
         this.email = email;
     }

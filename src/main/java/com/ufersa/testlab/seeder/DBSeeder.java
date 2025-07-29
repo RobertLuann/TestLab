@@ -48,9 +48,9 @@ public class DBSeeder {
     private void seedDisciplinas() {
         System.out.println("Semeando disciplinas...");
         if (disciplinaDAO.listarDisciplinas().isEmpty()) {
-            Disciplina d1 = new Disciplina("DCA0101", "Programação Orientada a Objetos");
-            Disciplina d2 = new Disciplina("MAT0102", "Cálculo Vetorial");
-            Disciplina d3 = new Disciplina("DCA0203", "Estrutura de Dados");
+            Disciplina d1 = new Disciplina("PROGOBJ0101", "Programação Orientada a Objetos");
+            Disciplina d2 = new Disciplina("DCA0102", "Cálculo Vetorial");
+            Disciplina d3 = new Disciplina("ESTDADOS0203", "Estrutura de Dados");
 
             disciplinaDAO.cadastrarDisciplina(d1);
             disciplinaDAO.cadastrarDisciplina(d2);
@@ -67,7 +67,7 @@ public class DBSeeder {
         if (questaoDAO.listarTodas().isEmpty()) {
             QuestaoDissertativa q1 = new QuestaoDissertativa(
                     "QD001", "Explique o conceito de Polimorfismo em POO.",
-                    "DCA0101", "POO", 3L,
+                    "PROGOBJ0101", "POO", 3L,
                     "Polimorfismo é a capacidade de um objeto poder ser referenciado de várias formas."
             );
             questaoDAO.cadastrarQuestao(q1);
@@ -80,7 +80,7 @@ public class DBSeeder {
             );
             QuestaoMultiplaEscolha q2 = new QuestaoMultiplaEscolha(
                     "QME001", "Qual a complexidade de tempo do algoritmo Bubble Sort no pior caso?",
-                    "DCA0203", "Algoritmos de Ordenação", 4L,
+                    "ESTDADOS0203", "Algoritmos de Ordenação", 4L,
                     alternativasQ2, 2L
             );
             questaoDAO.cadastrarQuestao(q2);
@@ -92,7 +92,7 @@ public class DBSeeder {
             );
             QuestaoMultiplaEscolha q3 = new QuestaoMultiplaEscolha(
                     "QME002", "Qual pilar da POO visa proteger os dados de um objeto, expondo apenas operações seguras?",
-                    "DCA0101", "Pilares da POO", 2L,
+                    "PROGOBJ0101", "Pilares da POO", 2L,
                     alternativasQ3, 1L
             );
             questaoDAO.cadastrarQuestao(q3);

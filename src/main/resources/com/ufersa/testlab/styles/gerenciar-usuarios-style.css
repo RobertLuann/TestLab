@@ -86,3 +86,40 @@
 .remove-button:hover {
     -fx-background-color: #c14a4a;
 }
+
+.filter-bar {
+    -fx-background-color: #e9eef7;
+    -fx-padding: 10px;
+    -fx-background-radius: 8;
+    -fx-spacing: 10px;
+}
+
+.filter-bar .text-field, .filter-bar .combo-box {
+    -fx-background-radius: 5;
+    -fx-pref-height: 35px;
+}
+
+.search-button {
+    -fx-background-color: #5a78d1;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+    -fx-padding: 8 15 8 15;
+}
+.search-button:hover {
+    -fx-background-color: #4a68c1;
+}
+
+.clear-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #5a6268;
+    -fx-border-color: #c8c8c8;
+    -fx-border-radius: 5;
+    -fx-cursor: hand;
+    -fx-padding: 8 15 8 15;
+}
+.clear-button:hover {
+    -fx-background-color: #e2e6ea;
+    -fx-border-color: #b8b8b8;
+}

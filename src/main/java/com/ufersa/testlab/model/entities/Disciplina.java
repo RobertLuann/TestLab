@@ -32,12 +32,21 @@ public class Disciplina {
 
     // Setters
     public void setCodigo(String codigo) {
+        if (codigo == null || codigo.isBlank()) {
+            throw new IllegalArgumentException("O código da disciplina não pode ser nulo ou vazio.");
+        }
         this.codigo = codigo;
     }
     public void setNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("O nome da disciplina não pode ser nulo ou vazio.");
+        }
         this.nome = nome;
     }
     public void setAssunto(String assunto) {
+        if (assunto == null || assunto.isBlank()) {
+            throw new IllegalArgumentException("O assunto não pode ser nulo ou vazio.");
+        }
         this.assuntos.add(assunto);
     }
 

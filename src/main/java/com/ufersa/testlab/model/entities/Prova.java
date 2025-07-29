@@ -44,6 +44,9 @@ public class Prova {
         if (this.questoes == null) {
             this.questoes = new ArrayList<>();
         }
+        if (questao == null) {
+            throw new IllegalArgumentException("A questão não pode ser nula ou vazia.");
+        }
         this.questoes.add(questao);
     }
 
@@ -53,35 +56,45 @@ public class Prova {
         }
     }
 
-    //Getters/Setters
+    // Getters e Setters
+
     public Long getId() {
         return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
     }
     public String getTitulo() {
         return titulo;
     }
     public void setTitulo(String titulo) {
+        if (titulo == null || titulo.isBlank()) {
+            throw new IllegalArgumentException("O titulo da prova não pode ser nulo ou vazio.");
+        }
         this.titulo = titulo;
     }
     public List<Questao> getQuestoes() {
         return questoes;
     }
     public void setQuestoes(List<Questao> questoes) {
+        if (questoes == null || questoes.isEmpty()) {
+            throw new IllegalArgumentException("Deve ser fornecida pelo menos uma questão.");
+        }
         this.questoes = questoes;
     }
     public Disciplina getDisciplina() {
         return disciplina;
     }
     public void setDisciplina(Disciplina disciplina) {
+        if (disciplina == null) {
+            throw new IllegalArgumentException("A disciplina não pode ser nula ou vazia.");
+        }
         this.disciplina = disciplina;
     }
     public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
     public void setDataCriacao(LocalDateTime dataCriacao) {
+        if (dataCriacao == null) {
+            throw new IllegalArgumentException("A data não pode ser nula ou vazia.");
+        }
         this.dataCriacao = dataCriacao;
     }
 }

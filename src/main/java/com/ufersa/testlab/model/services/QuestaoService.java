@@ -7,7 +7,6 @@ import com.ufersa.testlab.model.entities.Alternativa;
 import com.ufersa.testlab.model.entities.Questao;
 import com.ufersa.testlab.model.entities.QuestaoDissertativa;
 import com.ufersa.testlab.model.entities.QuestaoMultiplaEscolha;
-import jakarta.persistence.EntityNotFoundException;
 
 import java.util.List;
 
@@ -51,30 +50,8 @@ public class QuestaoService {
         return q;
     }
 
-    public List<Questao> buscarPorDisciplina(String codigo) {
-        disciplinaService.buscarPorCodigo(codigo);
-
-        List<Questao> questoes = questaoDAO.buscarPorDisciplina(codigo);
-        if (questoes.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma questão encontrada.");
-        }
-        return questoes;
-    }
-
-    public List<Questao> buscarPorAssunto(String assunto) {
-        List<Questao> questoes = questaoDAO.buscarPorAssunto(assunto);
-        if (questoes.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma questão encontrada.");
-        }
-        return questoes;
-    }
-
-    public List<Questao> buscarPorDificuldade(Long dificuldade) {
-        List<Questao> questoes = questaoDAO.buscarPorDificuldade(dificuldade);
-        if (questoes.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma questão encontrada.");
-        }
-        return questoes;
+    public List<Questao> buscarPorFiltros(String disciplina, String assunto, Long dificuldade) {
+        return questaoDAO.buscarPorFiltros(disciplina, assunto, dificuldade);
     }
 
     public List<Questao> listarQuestoes() {

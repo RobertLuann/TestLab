@@ -4,8 +4,11 @@ import com.ufersa.testlab.model.entities.Questao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QuestaoDAO {
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestLab");
@@ -27,22 +30,30 @@ public class QuestaoDAO {
         return em.createQuery("SELECT q FROM Questao q", Questao.class).getResultList();
     }
 
-    public List<Questao> buscarPorDisciplina(String codigoDisciplina) {
-        return em.createQuery("SELECT q FROM Questao q WHERE q.codigoDisciplina = :codigoDisciplina", Questao.class)
-                .setParameter("codigoDisciplina", codigoDisciplina)
-                .getResultList();
-    }
+    public List<Questao> buscarPorFiltros(String disciplina, String assunto, Long dificuldade) {
+        StringBuilder jpql = new StringBuilder("SELECT q FROM Questao q WHERE 1=1");
+        Map<String, Object> params = new HashMap<>();
 
-    public List<Questao> buscarPorAssunto(String assunto) {
-        return em.createQuery("SELECT q FROM Questao q WHERE q.assunto = :assunto", Questao.class)
-                .setParameter("assunto", assunto)
-                .getResultList();
-    }
+        if (disciplina != null && !disciplina.isBlank()) {
+            jpql.append(" AND q.codigoDisciplina LIKE :disciplina");
+            params.put("disciplina", "%" + disciplina + "%");
+        }
+        if (assunto != null && !assunto.isBlank()) {
+            jpql.append(" AND q.assunto LIKE :assunto");
+            params.put("assunto", "%" + assunto + "%");
+        }
+        if (dificuldade != null) {
+            jpql.append(" AND q.dificuldade = :dificuldade");
+            params.put("dificuldade", dificuldade);
+        }
 
-    public List<Questao> buscarPorDificuldade(Long dificuldade) {
-        return em.createQuery("SELECT q FROM Questao q WHERE q.dificuldade = :dificuldade", Questao.class)
-                .setParameter("dificuldade", dificuldade)
-                .getResultList();
+        TypedQuery<Questao> query = em.createQuery(jpql.toString(), Questao.class);
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        return query.getResultList();
     }
 
     public void atualizarQuestao(Questao questao) {

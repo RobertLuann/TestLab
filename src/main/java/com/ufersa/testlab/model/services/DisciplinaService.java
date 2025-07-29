@@ -5,6 +5,7 @@ import com.ufersa.testlab.model.entities.Disciplina;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DisciplinaService {
@@ -54,6 +55,14 @@ public class DisciplinaService {
             throw new EntityNotFoundException("Nenhuma disciplina cadastrada.");
         }
         return disciplinas;
+    }
+
+    public List<Disciplina> findByName(String nome) {
+        if (nome == null || nome.trim().length() < 2) {
+            return new ArrayList<>();
+        }
+
+        return disciplinaDAO.buscarPorNome(nome);
     }
 
     public void atualizarDisciplina(String codigo, String nome, List<String> assuntos) {

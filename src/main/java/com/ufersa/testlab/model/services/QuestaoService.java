@@ -1,5 +1,6 @@
 package com.ufersa.testlab.model.services;
 
+import com.ufersa.testlab.factory.QuestaoFactory;
 import com.ufersa.testlab.model.dao.DisciplinaDAO;
 import com.ufersa.testlab.model.dao.QuestaoDAO;
 import com.ufersa.testlab.model.entities.Alternativa;
@@ -23,7 +24,8 @@ public class QuestaoService {
 
         disciplinaService.buscarPorCodigo(codigoDisciplina);
 
-        QuestaoDissertativa q = new QuestaoDissertativa(codigo, enunciado, codigoDisciplina, assunto, dificuldade, resposta);
+        // Utiliza o factory para criar a questao
+        QuestaoDissertativa q = QuestaoFactory.criarQuestaoDissertativa(codigo, enunciado, codigoDisciplina, assunto, dificuldade, resposta);
         questaoDAO.cadastrarQuestao(q);
     }
 
@@ -36,7 +38,8 @@ public class QuestaoService {
             throw new IllegalArgumentException("Índice do gabarito inválido.");
         }
 
-        QuestaoMultiplaEscolha q = new QuestaoMultiplaEscolha(codigo, enunciado, codigoDisciplina, assunto, dificuldade, alternativas, gabarito);
+        // Utiliza o factory para criar a questão
+        QuestaoMultiplaEscolha q = QuestaoFactory.criarQuestaoMultiplaEscolha(codigo, enunciado, codigoDisciplina, assunto, dificuldade, alternativas, gabarito);
         questaoDAO.cadastrarQuestao(q);
     }
 
@@ -109,7 +112,7 @@ public class QuestaoService {
         escolha.setAlternativas(alternativas);
         escolha.setGabarito(gabarito);
 
-        questaoDAO.atualizarQuestao(escolha); // usa `merge` se necessário
+        questaoDAO.atualizarQuestao(escolha);
     }
 
     public void deletarQuestao(String codigo) {

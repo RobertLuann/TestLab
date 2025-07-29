@@ -8,7 +8,8 @@ import java.util.List;
 
 public class DBSeeder {
 
-    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
+    // O seeder tambem chama a mesma instancia
+    private final UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
     private final DisciplinaDAO disciplinaDAO = new DisciplinaDAO();
     private final QuestaoDAO questaoDAO = new QuestaoDAO();
     private final ProvaDAO provaDAO = new ProvaDAO();

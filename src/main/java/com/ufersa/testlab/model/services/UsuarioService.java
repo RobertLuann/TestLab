@@ -11,7 +11,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 import java.util.List;
 
 public class UsuarioService {
-    private final UsuarioDAO usuarioDAO = new UsuarioDAO();
+    // Agora nosso serviço chama a instancia inves de criar uma nova
+    private final UsuarioDAO usuarioDAO = UsuarioDAO.getInstance();
 
     public void cadastrarUsuario(String nome, String email, String senha, boolean eGerente) {
         if (nome.isBlank()) {

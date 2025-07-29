@@ -9,8 +9,24 @@ import jakarta.persistence.Persistence;
 import java.util.List;
 
 public class UsuarioDAO {
-    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestLab");
-    private final EntityManager em = emf.createEntityManager();
+    // Implementação do Design Pattern: SINGLETON
+    public static UsuarioDAO instance;
+    private final EntityManager em;
+
+    // Construtor privado para impedir a criação de uma nova instância
+    private UsuarioDAO() {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestLab");
+        this.em = emf.createEntityManager();
+    }
+
+    // Função púlica para pegar a instância de acesso global
+    public static synchronized UsuarioDAO getInstance() {
+        if (instance == null) {
+            instance = new UsuarioDAO();
+        }
+        return instance;
+    }
+
 
     public void cadastrarUsuario(Usuario usuario) {
         em.getTransaction().begin();

@@ -1,36 +1,39 @@
 package com.ufersa.testlab.model.dao;
 
 import com.ufersa.testlab.model.entities.Prova;
-import jakarta.persistence.*;
+import com.ufersa.testlab.util.JPAUtil;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
 import java.util.List;
 
 public class ProvaDAO {
 
-    private final EntityManagerFactory emf;
-
-    public ProvaDAO() {
-        this.emf = Persistence.createEntityManagerFactory("TestLab");
-    }
+    // Construtor vazio, pois não há mais variáveis de instância para inicializar
+    public ProvaDAO() {}
 
     public void cadastrarProva(Prova prova) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
             em.persist(prova);
             transaction.commit();
         } catch (RuntimeException e) {
-            if (transaction.isActive()) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             throw e;
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
 
     public void deletarProva(Prova prova) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
@@ -38,26 +41,30 @@ public class ProvaDAO {
             em.remove(managedProva);
             transaction.commit();
         } catch (RuntimeException e) {
-            if (transaction.isActive()) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             throw e;
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
 
     public Prova buscarPorId(Long id) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.find(Prova.class, id);
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
 
     public Prova buscarPorTitulo(String titulo) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         try {
             TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p WHERE p.titulo = :titulo", Prova.class);
             query.setParameter("titulo", titulo);
@@ -65,33 +72,39 @@ public class ProvaDAO {
         } catch (NoResultException e) {
             return null;
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
 
     public List<Prova> buscarPorDisciplina(String codigoDisciplina) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         try {
             TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p WHERE p.disciplina.codigo = :codigo", Prova.class);
             query.setParameter("codigo", codigoDisciplina);
             return query.getResultList();
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
 
     public List<Prova> listarTodas() {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         try {
             TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p", Prova.class);
             return query.getResultList();
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
 
     public Prova atualizarProva(Prova prova) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
         try {
             transaction.begin();
@@ -99,18 +112,19 @@ public class ProvaDAO {
             transaction.commit();
             return updatedProva;
         } catch (RuntimeException e) {
-            if (transaction.isActive()) {
+            if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
             throw e;
         } finally {
-            em.close();
+            if (em != null) {
+                em.close();
+            }
         }
     }
 
-    public void close() {
-        if (this.emf != null && this.emf.isOpen()) {
-            this.emf.close();
-        }
+    // O método 'salvar' é idêntico ao 'cadastrarProva'
+    public void salvar(Prova prova) {
+        cadastrarProva(prova);
     }
 }

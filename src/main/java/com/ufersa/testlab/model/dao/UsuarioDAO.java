@@ -1,25 +1,18 @@
 package com.ufersa.testlab.model.dao;
 
 import com.ufersa.testlab.model.entities.Usuario;
+import com.ufersa.testlab.util.JPAUtil;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.NoResultException;
-import jakarta.persistence.Persistence;
-
 import java.util.List;
 
 public class UsuarioDAO {
-    // Implementação do Design Pattern: SINGLETON
+    // A implementação do Singleton permanece, mas agora corrigida.
     public static UsuarioDAO instance;
-    private final EntityManager em;
 
-    // Construtor privado para impedir a criação de uma nova instância
-    private UsuarioDAO() {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("TestLab");
-        this.em = emf.createEntityManager();
-    }
+    // O construtor agora é vazio e não cria mais conexões.
+    private UsuarioDAO() {}
 
-    // Função púlica para pegar a instância de acesso global
     public static synchronized UsuarioDAO getInstance() {
         if (instance == null) {
             instance = new UsuarioDAO();
@@ -27,47 +20,103 @@ public class UsuarioDAO {
         return instance;
     }
 
-
+    // Cada método agora gerencia seu próprio EntityManager, usando o padrão correto.
     public void cadastrarUsuario(Usuario usuario) {
-        em.getTransaction().begin();
-        em.persist(usuario);
-        em.getTransaction().commit();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.persist(usuario);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     public Usuario buscarPorID(Long id) {
-        return em.find(Usuario.class, id);
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.find(Usuario.class, id);
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     public Usuario buscarPorEmail(String email) {
-        Usuario usuario = null;
+        EntityManager em = JPAUtil.getEntityManager();
         try {
-            usuario = em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
+            return em.createQuery("SELECT u FROM Usuario u WHERE u.email = :email", Usuario.class)
                     .setParameter("email", email)
                     .getSingleResult();
-
         } catch (NoResultException e) {
-            System.out.println("Usuario nao encontrado.");
+            // Não é um erro, apenas significa que não encontrou. Retornar null é o esperado.
+            return null;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
         }
-        return usuario;
     }
 
     public List<Usuario> listarUsuarios() {
-        return em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT u FROM Usuario u", Usuario.class).getResultList();
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     public void atualizarUsuario(Usuario usuario) {
-        em.getTransaction().begin();
-        em.merge(usuario);
-        em.getTransaction().commit();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(usuario);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
     public void deletarUsuario(Usuario usuario) {
-        em.getTransaction().begin();
-        em.remove(usuario);
-        em.getTransaction().commit();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            em.getTransaction().begin();
+            // Garante que a entidade está no estado "managed" antes de remover
+            if (!em.contains(usuario)) {
+                usuario = em.merge(usuario);
+            }
+            em.remove(usuario);
+            em.getTransaction().commit();
+        } catch (RuntimeException e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
     }
 
-    public void limparCache() {
-        em.clear();
-    }
+    // O método limparCache() não é mais necessário, pois cada operação usa um EntityManager novo e limpo.
+    // public void limparCache() { ... }
 }

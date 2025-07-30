@@ -23,7 +23,9 @@ public class Main extends Application{
     public static void main(String[] args) {
         // Seeder
         new DBSeeder().run();
-
+        System.out.println("Iniciando a aplicação. Executando o DBSeeder...");
+        DBSeeder seeder = new DBSeeder();
+        seeder.run();
         // JavaFX
         launch(args);
     }

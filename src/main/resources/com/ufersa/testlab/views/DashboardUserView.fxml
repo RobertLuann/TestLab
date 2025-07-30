@@ -26,11 +26,8 @@
                 <Button onAction="#handleEditarProvas" styleClass="nav-button" text="Ver Disciplinas " />
                 <Button onAction="#handleVerQuestoes" styleClass="nav-button" text="Ver Questões" />
 
-                <Pane VBox.vgrow="ALWAYS">
-                    <children>
-                        <Button fx:id="newExamButton" alignment="BASELINE_CENTER" layoutY="291.0" onAction="#handleCriarNovaProva" styleClass="cta-button" text="Gerar Nova Prova" />
-                    </children>
-                </Pane>
+                <Pane VBox.vgrow="ALWAYS" />
+                <Button fx:id="newExamButton" alignment="BASELINE_CENTER" layoutY="291.0" onAction="#handleCriarNovaProva" styleClass="cta-button" text="Gerar Nova Prova" />
             </children>
         </VBox>
     </left>

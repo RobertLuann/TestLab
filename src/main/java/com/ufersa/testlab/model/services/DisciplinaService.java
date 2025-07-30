@@ -32,8 +32,7 @@ public class DisciplinaService {
             throw new EntityExistsException("Já existe outra disciplina com esse código.");
         }
 
-        Disciplina disciplina = new Disciplina(codigo, nome);
-        assuntos.forEach(disciplina::setAssunto);
+        Disciplina disciplina = new Disciplina(codigo, nome, assuntos);
         disciplinaDAO.cadastrarDisciplina(disciplina);
     }
 
@@ -81,7 +80,7 @@ public class DisciplinaService {
 
             disciplina.setNome(nome);
             disciplina.deleteAssuntos();
-            assuntos.forEach(disciplina::setAssunto);
+            disciplina.setAssuntos(assuntos);
 
             disciplinaDAO.atualizarDisciplina(disciplina);
         }

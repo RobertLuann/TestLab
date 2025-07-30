@@ -18,15 +18,15 @@ public class DashboardAdminController {
     }
 
     @FXML
-    private void handleEditarProvas() {
+    private void handleGerenciarProvas() {
         System.out.println("Admin: Carregando tela de Edição de Provas...");
         // loadView("/com/ufersa/testlab/views/provas/AdminProvasView.fxml");
     }
 
     @FXML
-    private void handleEditarDisciplinas() {
+    private void handleGerenciarDisciplinas() {
         System.out.println("Admin: Carregando tela de Edição de Disciplinas...");
-        // loadView("/com/ufersa/testlab/views/disciplinas/AdminDisciplinasView.fxml");
+        loadView("/com/ufersa/testlab/views/disciplinas/GerenciarDisciplinasView.fxml");
     }
 
     @FXML

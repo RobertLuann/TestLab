@@ -14,20 +14,21 @@ public class Disciplina {
     @Column(nullable = false)
     private String nome;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "disciplina_assunto",
             joinColumns = @JoinColumn(name = "disciplina_assunto")
     )
     @Column(nullable = false)
-    private final List<String> assuntos = new ArrayList<>();
+    private List<String> assuntos = new ArrayList<>();
 
     // Construtores
     public Disciplina() {}
 
-    public Disciplina(String codigo, String nome) {
+    public Disciplina(String codigo, String nome, List<String> assuntos) {
         setCodigo(codigo);
         setNome(nome);
+        setAssuntos(assuntos);
     }
 
     // Setters
@@ -43,11 +44,11 @@ public class Disciplina {
         }
         this.nome = nome;
     }
-    public void setAssunto(String assunto) {
-        if (assunto == null || assunto.isBlank()) {
-            throw new IllegalArgumentException("O assunto não pode ser nulo ou vazio.");
+    public void setAssuntos(List<String> assuntos) {
+        if (assuntos == null) {
+            throw new IllegalArgumentException("Os assuntos não podem ser nulos ou vazios.");
         }
-        this.assuntos.add(assunto);
+        this.assuntos = assuntos;
     }
 
     // Getters

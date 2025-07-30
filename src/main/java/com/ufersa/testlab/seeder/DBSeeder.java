@@ -31,13 +31,13 @@ public class DBSeeder {
             Gerente admin = new Gerente();
             admin.setNome("Gerente");
             admin.setEmail("gerente@testlab.com");
-            admin.setSenha("123");
+            admin.setSenha("123456");
             usuarioDAO.cadastrarUsuario(admin);
 
             Funcionario professor = new Funcionario();
             professor.setNome("Funcionario");
             professor.setEmail("funcionario@testlab.com");
-            professor.setSenha("123");
+            professor.setSenha("654321");
             usuarioDAO.cadastrarUsuario(professor);
 
             System.out.println("Usuários criados com sucesso.");
@@ -49,9 +49,9 @@ public class DBSeeder {
     private void seedDisciplinas() {
         System.out.println("Semeando disciplinas...");
         if (disciplinaDAO.listarDisciplinas().isEmpty()) {
-            Disciplina d1 = new Disciplina("DCA0101", "Programação Orientada a Objetos");
-            Disciplina d2 = new Disciplina("DCA0102", "Cálculo Vetorial");
-            Disciplina d3 = new Disciplina("DCA0203", "Estrutura de Dados");
+            Disciplina d1 = new Disciplina("DCA0101", "Programação Orientada a Objetos", List.of("POO","Pilares da POO","Padrões de Design"));
+            Disciplina d2 = new Disciplina("DCA0102", "Cálculo Vetorial", List.of("Vetores","Cálculo de Vetores"));
+            Disciplina d3 = new Disciplina("DCA0203", "Estrutura de Dados", List.of("Algoritmos de Ordenação", "Algoritmos Chave-Resposta"));
 
             disciplinaDAO.cadastrarDisciplina(d1);
             disciplinaDAO.cadastrarDisciplina(d2);

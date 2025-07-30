@@ -1,6 +1,8 @@
 package com.ufersa.testlab.model.dao;
 
 import com.ufersa.testlab.model.entities.Prova;
+import com.ufersa.testlab.model.entities.Questao;
+import com.ufersa.testlab.model.entities.QuestaoMultiplaEscolha;
 import com.ufersa.testlab.util.JPAUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -94,10 +96,26 @@ public class ProvaDAO {
     public List<Prova> listarTodas() {
         EntityManager em = JPAUtil.getEntityManager();
         try {
-            TypedQuery<Prova> query = em.createQuery("SELECT p FROM Prova p", Prova.class);
-            return query.getResultList();
+            // Etapa 1: Busca as Provas e suas Questões.
+            // Removemos o JOIN FETCH para as alternativas daqui para evitar o erro.
+            String jpql = "SELECT DISTINCT p FROM Prova p LEFT JOIN FETCH p.questoes";
+            List<Prova> provas = em.createQuery(jpql, Prova.class).getResultList();
+
+            // Etapa 2: Para cada prova encontrada, inicializamos as alternativas das questões de múltipla escolha.
+            // Isso é feito enquanto a conexão com o banco ainda está aberta.
+            for (Prova prova : provas) {
+                for (Questao questao : prova.getQuestoes()) {
+                    if (questao instanceof QuestaoMultiplaEscolha) {
+                        // Acessar a lista de alternativas força o Hibernate a carregá-la.
+                        // O .size() é uma forma simples de fazer isso.
+                        ((QuestaoMultiplaEscolha) questao).getAlternativas().size();
+                    }
+                }
+            }
+            return provas;
+
         } finally {
-            if (em != null) {
+            if (em.isOpen()) {
                 em.close();
             }
         }

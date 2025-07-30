@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 
+import java.util.List;
+
 @Entity
 @DiscriminatorValue("DISSERTATIVA")
 public class QuestaoDissertativa extends Questao {
@@ -36,5 +38,11 @@ public class QuestaoDissertativa extends Questao {
         System.out.println("Disciplina: " + getDisciplina());
         System.out.println("Assunto: " + getAssunto());
         System.out.println("Dificuldade: " + getDificuldade() + "\n");
+    }
+
+    @Override
+    public List<Alternativa> getAlternativas() {
+        // Questões dissertativas não têm alternativas, então retornamos null ou uma lista vazia.
+        return null;
     }
 }

@@ -87,4 +87,6 @@ public class QuestaoMultiplaEscolha extends Questao {
         System.out.println("Dificuldade: " + getDificuldade());
         System.out.println();
     }
+
+
 }

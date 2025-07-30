@@ -14,15 +14,46 @@
 .add-button { -fx-background-color: #5a78d1; -fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold; -fx-background-radius: 8; -fx-padding: 8 15 8 15; -fx-cursor: hand; }
 .add-button:hover { -fx-background-color: #4a68c1; }
 
-.table-view { -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-background-radius: 8; }
-.table-view .column-header-background { -fx-background-color: #f4f4f4; -fx-background-radius: 8 8 0 0; -fx-background-insets: 0; }
+
+.table-view { -fx-border-color: #c8c8c8; -fx-background-radius: 8; -fx-border-radius: 8; }
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(#f8f8f8, #e8e8e8);
+    -fx-background-radius: 8 8 0 0;
+    -fx-background-insets: 0;
+}
+
 .table-view .column-header .label { -fx-alignment: CENTER; -fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #333333; }
-.table-view .table-row-cell:odd { -fx-background-color: #fafafa; }
+
+/* MUDANÇA 2: Removemos as linhas alternadas, todas as linhas agora são brancas */
+.table-view .table-row-cell {
+    -fx-background-color: white;
+}
+
 .table-view .table-row-cell:selected { -fx-background-color: #d8deeb; }
 
 .centered-cell { -fx-alignment: CENTER; }
-.action-button { -fx-font-size: 12px; -fx-text-fill: white; -fx-background-radius: 5; -fx-pref-width: 70px; -fx-cursor: hand; }
+
+.action-button {
+    -fx-font-size: 12px;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-pref-width: 75px;
+    -fx-cursor: hand;
+}
+
 .edit-button { -fx-background-color: #5a78d1; }
 .edit-button:hover { -fx-background-color: #4a68c1; }
-.remove-button { -fx-background-color: #d15a5a; }
-.remove-button:hover { -fx-background-color: #c14a4a; }
+
+.remove-button { -fx-background-color: #d9534f; }
+.remove-button:hover { -fx-background-color: #c9302c; }
+
+.pdf-button {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #333333;
+    -fx-border-color: #c8c8c8;
+    -fx-border-width: 1px;
+}
+.pdf-button:hover {
+    -fx-background-color: #e0e0e0;
+}

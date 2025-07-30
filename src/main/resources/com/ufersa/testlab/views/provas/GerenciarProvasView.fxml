@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane stylesheets="@/com/ufersa/testlab/styles/visualizacao-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.provas.GerenciarProvasController">
+    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+    <top>
+        <HBox alignment="CENTER_LEFT">
+            <Label styleClass="view-title" text="Gerenciamento de Provas" />
+        </HBox>
+    </top>
+    <center>
+        <TableView fx:id="tabelaProvas" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="colunaTitulo" text="Título da Prova" />
+                <TableColumn fx:id="colunaDisciplina" text="Disciplina" />
+                <TableColumn fx:id="colunaQtdQuestoes" text="Qtd. Questões" styleClass="centered-cell" />
+                <TableColumn fx:id="colunaSemestre" text="Semestre de Criação" styleClass="centered-cell" />
+                <TableColumn fx:id="colunaAcoes" text="Ações" />
+            </columns>
+            <BorderPane.margin><Insets top="20.0" /></BorderPane.margin>
+        </TableView>
+    </center>
+</BorderPane>

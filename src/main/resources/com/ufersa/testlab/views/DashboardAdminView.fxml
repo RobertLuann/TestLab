@@ -19,7 +19,7 @@
             <Label styleClass="title-label" text="TestLab" />
             <Label fx:id="usuarioLabel" styleClass="user-label" text="Usuário: ..." />
 
-            <Button onAction="#handleGerenciarProvas" styleClass="nav-button" text="Editar Provas" />
+            <Button onAction="#handleGerenciarProvas" styleClass="nav-button" text="Gerenciar Provas" />
             <Button onAction="#handleGerenciarDisciplinas" styleClass="nav-button" text="Gerenciar Disciplinas" />
             <Button onAction="#handleGerenciarQuestoes" styleClass="nav-button" text="Gerenciar Questões" />
 

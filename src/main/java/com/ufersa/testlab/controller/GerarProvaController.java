@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import com.ufersa.testlab.controller.provas.GerenciarProvasController;
 
 import java.net.URL;
 import java.util.*;
@@ -31,6 +32,7 @@ public class GerarProvaController implements Initializable {
     private List<Spinner<Integer>> spinners;
     private Prova provaParaEditar;
 
+    private GerenciarProvasController g = new GerenciarProvasController();
     private DisciplinaDAO disciplinaDAO;
     private QuestaoDAO questaoDAO;
     private ProvaDAO provaDAO;
@@ -127,6 +129,8 @@ public class GerarProvaController implements Initializable {
         }
 
         fecharJanela();
+
+        g.carregarProvas();
     }
 
     @FXML

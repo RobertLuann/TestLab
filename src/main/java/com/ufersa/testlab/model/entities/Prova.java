@@ -16,7 +16,7 @@ public class Prova {
     @Column(nullable = false, unique = true)
     private String titulo;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER) // <<<--- ADICIONE ISTO
     @JoinTable(
             name = "prova_questao",
             joinColumns = @JoinColumn(name = "prova_codigo"),
@@ -32,6 +32,8 @@ public class Prova {
     private LocalDateTime dataCriacao;
 
     public Prova() {}
+
+    public Prova(String p1, String primeiraProva, Disciplina d1, int i, String s) {}
 
     public Prova(String titulo, List<Questao> questoes, Disciplina disciplina) {
         this.titulo = titulo;
@@ -96,5 +98,15 @@ public class Prova {
             throw new IllegalArgumentException("A data não pode ser nula ou vazia.");
         }
         this.dataCriacao = dataCriacao;
+    }
+    @Transient
+    public String getSemestreCriacao() {
+        if (this.dataCriacao == null) {
+            return "N/A";
+        }
+        int ano = this.dataCriacao.getYear();
+        int mes = this.dataCriacao.getMonthValue();
+        int semestre = (mes <= 6) ? 1 : 2;
+        return ano + "." + semestre;
     }
 }

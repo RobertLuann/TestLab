@@ -89,7 +89,4 @@ public class ProvaService {
         return provaDAO.atualizarProva(prova);
     }
 
-    public void close() {
-        provaDAO.close();
-    }
 }

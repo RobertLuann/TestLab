@@ -12,7 +12,7 @@ public abstract class Questao {
     @Column(nullable = false)
     private String enunciado;
 
-    @Column(nullable = false)
+    @Column(name = "codigo_disciplina", insertable = false, updatable = false)
     private String codigoDisciplina;
 
     @Column(nullable = false)
@@ -20,6 +20,10 @@ public abstract class Questao {
 
     @Column(nullable = false)
     private Long dificuldade;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "codigo_disciplina", nullable = false)
+    private Disciplina disciplina;
 
     // Construtores
     public Questao() {}
@@ -71,7 +75,16 @@ public abstract class Questao {
         }
         this.dificuldade = dificuldade;
     }
-
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
+        // Mantém o campo 'codigoDisciplina' sincronizado por segurança, se precisar dele
+        if (disciplina != null) {
+            this.codigoDisciplina = disciplina.getCodigo();
+        }
+    }
+    public Disciplina getDisciplinaObject() {
+        return this.disciplina;
+    }
     // Getters
     public String getCodigo() { return this.codigo; }
     public String getEnunciado() { return this.enunciado; }

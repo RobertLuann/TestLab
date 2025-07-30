@@ -1,9 +1,12 @@
 package com.ufersa.testlab.controller.questoes;
 
 import com.ufersa.testlab.model.entities.*;
+import com.ufersa.testlab.model.services.DisciplinaService;
 import com.ufersa.testlab.model.services.QuestaoService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -27,13 +30,17 @@ public class GerenciarQuestoesController {
     @FXML private TableColumn<Questao, Void> colunaEditar;
     @FXML private TableColumn<Questao, Void> colunaRemover;
     @FXML private VBox detailsPane;
+    @FXML private TextField filtroDisciplinaField;
+    @FXML private TextField filtroAssuntoField;
+    @FXML private ComboBox<Long> filtroDificuldadeComboBox;
 
     private final QuestaoService questaoService = new QuestaoService();
+    private final DisciplinaService disciplinaService = new DisciplinaService();
+    private ObservableList<Questao> questoesNaTabela;
 
     @FXML
     public void initialize() {
         colunaEnunciado.setCellValueFactory(new PropertyValueFactory<>("enunciado"));
-
         colunaTipo.setCellValueFactory(cellData -> {
             Questao questao = cellData.getValue();
             String tipo = (questao instanceof QuestaoMultiplaEscolha) ? "Múltipla Escolha" : "Dissertativa";
@@ -49,16 +56,50 @@ public class GerenciarQuestoesController {
         colunaEditar.prefWidthProperty().bind(tabelaQuestoes.widthProperty().multiply(0.12));
         colunaRemover.prefWidthProperty().bind(tabelaQuestoes.widthProperty().multiply(0.12));
 
-        carregarQuestoes();
+        filtroDificuldadeComboBox.setItems(FXCollections.observableArrayList(1L, 2L, 3L, 4L, 5L));
+        filtroDificuldadeComboBox.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Long item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText("Dificuldade");
+                } else {
+                    setText("Dificuldade: " + item.toString());
+                }
+            }
+        });
 
         carregarQuestoes();
         configurarBotaoEditar();
         configurarBotaoRemover();
     }
 
+    @FXML
+    void handlePesquisar(ActionEvent event) {
+        String disciplina = filtroDisciplinaField.getText();
+        String assunto = filtroAssuntoField.getText();
+        Long dificuldade = filtroDificuldadeComboBox.getValue(); // Será null se nada for selecionado
+
+        List<Questao> resultado = questaoService.buscarPorFiltros(disciplina, assunto, dificuldade);
+
+        questoesNaTabela = FXCollections.observableArrayList(resultado);
+        tabelaQuestoes.setItems(questoesNaTabela);
+    }
+
+    @FXML
+    void handleLimparFiltros(ActionEvent event) {
+        filtroDisciplinaField.clear();
+        filtroAssuntoField.clear();
+        filtroDificuldadeComboBox.setValue(null);
+
+        carregarQuestoes();
+    }
+
+
     private void carregarQuestoes() {
         List<Questao> questoes = questaoService.listarQuestoes();
-        tabelaQuestoes.setItems(FXCollections.observableArrayList(questoes));
+        questoesNaTabela = FXCollections.observableArrayList(questoes);
+        tabelaQuestoes.setItems(questoesNaTabela);
     }
 
     @FXML
@@ -97,7 +138,7 @@ public class GerenciarQuestoesController {
             Label keyDisciplina = new Label("Disciplina:");
             keyDisciplina.getStyleClass().add("details-key");
             grid.add(keyDisciplina, 0, 1);
-            grid.add(new Label(questao.getDisciplina()), 1, 1);
+            grid.add(new Label(disciplinaService.buscarPorCodigo(questao.getDisciplina()).getNome()), 1, 1);
 
             Label keyAssunto = new Label("Assunto:");
             keyAssunto.getStyleClass().add("details-key");

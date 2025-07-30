@@ -49,9 +49,9 @@ public class DBSeeder {
     private void seedDisciplinas() {
         System.out.println("Semeando disciplinas...");
         if (disciplinaDAO.listarDisciplinas().isEmpty()) {
-            Disciplina d1 = new Disciplina("DCA0101", "Programação Orientada a Objetos");
-            Disciplina d2 = new Disciplina("MAT0102", "Cálculo Vetorial");
-            Disciplina d3 = new Disciplina("DCA0203", "Estrutura de Dados");
+            Disciplina d1 = new Disciplina("PROGOBJ0101", "Programação Orientada a Objetos");
+            Disciplina d2 = new Disciplina("DCA0102", "Cálculo Vetorial");
+            Disciplina d3 = new Disciplina("ESTDADOS0203", "Estrutura de Dados");
 
             disciplinaDAO.cadastrarDisciplina(d1);
             disciplinaDAO.cadastrarDisciplina(d2);

@@ -13,8 +13,8 @@ public class QuestaoDissertativa extends Questao {
 
     public QuestaoDissertativa() {}
 
-    public QuestaoDissertativa(String codigo, String enunciado, String codigoDisciplina, String assunto, Long dificuldade, String resposta) {
-        super(codigo, enunciado, codigoDisciplina, assunto, dificuldade);
+    public QuestaoDissertativa(String codigo, String enunciado, String codigoDisciplina, String assunto, Long dificuldade, String resposta, Disciplina disciplina) {
+        super(codigo, enunciado, codigoDisciplina, assunto, dificuldade, disciplina);
         setResposta(resposta);
     }
 

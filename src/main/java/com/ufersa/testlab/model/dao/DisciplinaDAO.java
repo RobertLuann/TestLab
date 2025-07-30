@@ -50,16 +50,6 @@ public class DisciplinaDAO {
         }
     }
 
-    public List<Disciplina> buscarPorNome(String nome) {
-        String jpql = "SELECT d FROM Disciplina d WHERE LOWER(d.nome) LIKE LOWER(:nome)";
-
-        TypedQuery<Disciplina> query = em.createQuery(jpql, Disciplina.class);
-
-        query.setParameter("nome", "%" + nome + "%");
-
-        return query.getResultList();
-    }
-
     public void atualizarDisciplina(Disciplina disciplina) {
         EntityManager em = JPAUtil.getEntityManager();
         try {

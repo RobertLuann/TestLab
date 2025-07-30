@@ -63,6 +63,12 @@ public class Prova {
     public Long getId() {
         return id;
     }
+    public void setId(Long id) {
+        if (id <= 0) {
+            throw new IllegalArgumentException("O id deve ser maior ou igual a 1.");
+        }
+        this.id = id;
+    }
     public String getTitulo() {
         return titulo;
     }

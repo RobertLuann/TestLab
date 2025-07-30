@@ -91,8 +91,10 @@ public class QuestaoDAO {
                 em.close();
             }
         }
-      
+    }
+
     public List<Questao> buscarPorFiltros(String disciplina, String assunto, Long dificuldade) {
+        EntityManager em = JPAUtil.getEntityManager();
         StringBuilder jpql = new StringBuilder("SELECT q FROM Questao q WHERE 1=1");
         Map<String, Object> params = new HashMap<>();
 

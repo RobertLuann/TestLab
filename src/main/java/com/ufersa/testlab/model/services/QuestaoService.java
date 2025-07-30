@@ -3,10 +3,7 @@ package com.ufersa.testlab.model.services;
 import com.ufersa.testlab.factory.QuestaoFactory;
 import com.ufersa.testlab.model.dao.DisciplinaDAO;
 import com.ufersa.testlab.model.dao.QuestaoDAO;
-import com.ufersa.testlab.model.entities.Alternativa;
-import com.ufersa.testlab.model.entities.Questao;
-import com.ufersa.testlab.model.entities.QuestaoDissertativa;
-import com.ufersa.testlab.model.entities.QuestaoMultiplaEscolha;
+import com.ufersa.testlab.model.entities.*;
 
 import java.util.List;
 
@@ -21,10 +18,10 @@ public class QuestaoService {
             throw new IllegalArgumentException("Código já utilizado.");
         }
 
-        disciplinaService.buscarPorCodigo(codigoDisciplina);
+        Disciplina disciplina = disciplinaService.buscarPorCodigo(codigoDisciplina);
 
         // Utiliza o factory para criar a questao
-        QuestaoDissertativa q = QuestaoFactory.criarQuestaoDissertativa(codigo, enunciado, codigoDisciplina, assunto, dificuldade, resposta);
+        QuestaoDissertativa q = QuestaoFactory.criarQuestaoDissertativa(codigo, enunciado, codigoDisciplina, assunto, dificuldade, resposta, disciplina);
         questaoDAO.cadastrarQuestao(q);
     }
 
@@ -37,8 +34,10 @@ public class QuestaoService {
             throw new IllegalArgumentException("Índice do gabarito inválido.");
         }
 
+        Disciplina disciplina = disciplinaService.buscarPorCodigo(codigoDisciplina);
+
         // Utiliza o factory para criar a questão
-        QuestaoMultiplaEscolha q = QuestaoFactory.criarQuestaoMultiplaEscolha(codigo, enunciado, codigoDisciplina, assunto, dificuldade, alternativas, gabarito);
+        QuestaoMultiplaEscolha q = QuestaoFactory.criarQuestaoMultiplaEscolha(codigo, enunciado, codigoDisciplina, assunto, dificuldade, alternativas, gabarito, disciplina);
         questaoDAO.cadastrarQuestao(q);
     }
 

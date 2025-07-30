@@ -49,9 +49,9 @@ public class DBSeeder {
     private void seedDisciplinas() {
         System.out.println("Semeando disciplinas...");
         if (disciplinaDAO.listarDisciplinas().isEmpty()) {
-            Disciplina d1 = new Disciplina("PROGOBJ0101", "Programação Orientada a Objetos");
+            Disciplina d1 = new Disciplina("DCA0101", "Programação Orientada a Objetos");
             Disciplina d2 = new Disciplina("DCA0102", "Cálculo Vetorial");
-            Disciplina d3 = new Disciplina("ESTDADOS0203", "Estrutura de Dados");
+            Disciplina d3 = new Disciplina("DCA0203", "Estrutura de Dados");
 
             disciplinaDAO.cadastrarDisciplina(d1);
             disciplinaDAO.cadastrarDisciplina(d2);
@@ -78,7 +78,8 @@ public class DBSeeder {
                     "QD001", "Explique o conceito de Polimorfismo em POO.",
                     disciplinaPOO.getCodigo(),
                     "POO", 3L,
-                    "Polimorfismo é a capacidade de um objeto poder ser referenciado de várias formas."
+                    "Polimorfismo é a capacidade de um objeto poder ser referenciado de várias formas.",
+                    disciplinaPOO
             );
             q1.setDisciplina(disciplinaPOO);
             questaoDAO.cadastrarQuestao(q1);
@@ -94,7 +95,7 @@ public class DBSeeder {
                     "QME001", "Qual a complexidade de tempo do algoritmo Bubble Sort no pior caso?",
                     disciplinaED.getCodigo(),
                     "Algoritmos de Ordenação", 4L,
-                    alternativasQ2, 2L
+                    alternativasQ2, 2L, disciplinaED
             );
             q2.setDisciplina(disciplinaED);
             questaoDAO.cadastrarQuestao(q2);
@@ -111,9 +112,7 @@ public class DBSeeder {
                     "QME002", "Qual pilar da POO visa proteger os dados de um objeto, expondo apenas operações seguras?",
                     disciplinaPOO.getCodigo(),
                     "Pilares da POO", 2L,
-                    alternativasQ3, 1L
-
-
+                    alternativasQ3, 1L, disciplinaPOO
             );
 
             q3.setDisciplina(disciplinaPOO);

@@ -2,6 +2,8 @@ package com.ufersa.testlab.model.entities;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_questao", discriminatorType = DiscriminatorType.STRING)
@@ -93,4 +95,7 @@ public abstract class Questao {
     public Long getDificuldade() { return this.dificuldade; }
 
     public abstract void getQuestao();
+
+    public abstract List<Alternativa> getAlternativas();
 }
+

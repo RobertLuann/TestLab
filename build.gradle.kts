@@ -30,6 +30,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/commons-validator/commons-validator
     implementation("commons-validator:commons-validator:1.9.0")
+
+    implementation("org.apache.pdfbox:pdfbox-app:3.0.2")
 }
 
 javafx {

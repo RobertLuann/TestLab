@@ -4,6 +4,7 @@ import com.ufersa.testlab.model.dao.ProvaDAO;
 import com.ufersa.testlab.model.entities.Prova;
 import com.ufersa.testlab.model.entities.Usuario;
 // A importação do 'GeradorProvaPdfService' foi removida.
+import com.ufersa.testlab.model.services.GeradorProvaPdfService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -15,10 +16,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -94,17 +97,21 @@ public class DashboardUserController implements Initializable {
 
                     private final Button btnEditar = new Button("Editar");
                     private final Button btnExcluir = new Button("Excluir");
-                    private final HBox pane = new HBox(10, btnEditar, btnExcluir);
+
+                    // 1. CRIAMOS O NOVO BOTÃO AQUI
+                    private final Button btnPdf = new Button("Gerar PDF");
+
+                    // 2. ADICIONAMOS O BOTÃO AO PAINEL QUE OS ORGANIZA
+                    private final HBox pane = new HBox(10, btnEditar, btnExcluir, btnPdf);
 
                     {
-                        // Define a ação do botão "Editar"
+                        // Ação do botão Editar (código que você já tem)
                         btnEditar.setOnAction(event -> {
-                            // Pega o objeto 'Prova' da linha em que o botão foi clicado
                             Prova prova = getTableView().getItems().get(getIndex());
                             abrirJanelaDeEdicao(prova);
                         });
 
-                        // Define a ação do botão "Excluir"
+                        // Ação do botão Excluir (código que você já tem)
                         btnExcluir.setOnAction(event -> {
                             Prova prova = getTableView().getItems().get(getIndex());
 
@@ -115,20 +122,46 @@ public class DashboardUserController implements Initializable {
 
                             if (alert.showAndWait().get() == ButtonType.OK) {
                                 provaDAO.deletarProva(prova);
-                                carregarProvas(); // Recarrega a tabela para mostrar a mudança
+                                carregarProvas(); // Recarrega a tabela
+                            }
+                        });
+
+                        // 3. ADICIONAMOS A LÓGICA PARA O NOVO BOTÃO "GERAR PDF"
+                        btnPdf.setOnAction(event -> {
+                            Prova provaSelecionada = getTableView().getItems().get(getIndex());
+
+                            FileChooser fileChooser = new FileChooser();
+                            fileChooser.setTitle("Salvar PDF da Prova");
+                            fileChooser.setInitialFileName(provaSelecionada.getTitulo().replaceAll("\\s+", "_") + ".pdf");
+                            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+                            File file = fileChooser.showSaveDialog(new Stage());
+
+                            if (file != null) {
+                                try {
+                                    // ANTES, a chamada era assim:
+                                    // GeradorProvaPdfService gerador = new GeradorProvaPdfService();
+                                    // gerador.gerarProva(provaSelecionada, file.getAbsolutePath());
+
+                                    // AGORA, a chamada passa o usuário logado e é estática (mais limpa):
+                                    GeradorProvaPdfService gerador = new GeradorProvaPdfService();
+                                    gerador.gerarProva(provaSelecionada, file.getAbsolutePath());
+
+                                    new Alert(Alert.AlertType.INFORMATION, "PDF da prova gerado com sucesso!").showAndWait();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    new Alert(Alert.AlertType.ERROR, "Erro ao gerar o PDF da prova.").showAndWait();
+                                }
                             }
                         });
                     }
 
-                    // Este método é crucial: ele desenha os botões na célula
                     @Override
                     protected void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty) {
-                            // Se a linha da tabela estiver vazia, não mostra nada
                             setGraphic(null);
                         } else {
-                            // Se a linha tiver uma prova, mostra o painel com os botões
                             setGraphic(pane);
                         }
                     }
@@ -137,10 +170,8 @@ public class DashboardUserController implements Initializable {
             }
         };
 
-        // Aplica a "fábrica de células" à coluna de ações
         acoesColumn.setCellFactory(cellFactory);
     }
-
     private void abrirJanelaDeEdicao(Prova prova) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ufersa/testlab/views/GerarProvaView.fxml"));
@@ -198,6 +229,35 @@ public class DashboardUserController implements Initializable {
 
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void handleGerarPdfAction(ActionEvent event) { // Ou o nome do método que seu botão chama
+        Prova provaSelecionada = provasTableView.getSelectionModel().getSelectedItem();
+        if (provaSelecionada == null) {
+            new Alert(Alert.AlertType.WARNING, "Por favor, selecione uma prova na tabela.").showAndWait();
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Salvar PDF da Prova");
+        fileChooser.setInitialFileName(provaSelecionada.getTitulo().replaceAll("\\s+", "_") + ".pdf");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        File file = fileChooser.showSaveDialog(new Stage());
+
+        if (file != null) {
+            try {
+                // Cria uma instância do nosso novo serviço e chama o método para gerar a prova
+                GeradorProvaPdfService gerador = new GeradorProvaPdfService();
+                gerador.gerarProva(provaSelecionada, file.getAbsolutePath());
+
+                new Alert(Alert.AlertType.INFORMATION, "PDF da prova gerado com sucesso!").showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                new Alert(Alert.AlertType.ERROR, "Erro ao gerar o PDF da prova.").showAndWait();
+            }
         }
     }
 }

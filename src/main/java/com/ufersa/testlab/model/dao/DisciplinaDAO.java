@@ -13,84 +13,43 @@ import java.util.List;
 public class DisciplinaDAO {
 
     // As variáveis de instância para emf e em foram removidas.
+    private final JPAUtil jpaUtil = JPAUtil.getInstancia();
 
     public void cadastrarDisciplina(Disciplina disciplina) {
         // Padrão: Obter EntityManager, usar e fechar.
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.persist(disciplina);
-            em.getTransaction().commit();
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        jpaUtil.executeInTransaction(em -> em.persist(disciplina));
     }
 
     public Disciplina buscarPorCodigo(String codigo) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            return em.find(Disciplina.class, codigo);
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        return jpaUtil.executeQuery(em -> em.find(Disciplina.class, codigo));
     }
 
     public List<Disciplina> listarDisciplinas() {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            return em.createQuery("SELECT d FROM Disciplina d ORDER BY d.nome", Disciplina.class).getResultList();
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        return jpaUtil.executeQuery(em ->
+                em.createQuery("SELECT d FROM Disciplina d ORDER BY d.nome", Disciplina.class)
+                        .getResultList()
+        );
     }
 
     public void atualizarDisciplina(Disciplina disciplina) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            em.merge(disciplina);
-            em.getTransaction().commit();
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        jpaUtil.executeInTransaction(em -> em.merge(disciplina));
+
     }
 
     public void deletarDisciplina(Disciplina disciplina) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
-            em.getTransaction().begin();
-            // Garante que a entidade está no estado "managed" antes de remover
-            if (!em.contains(disciplina)) {
-                disciplina = em.merge(disciplina);
-            }
-            em.remove(disciplina);
-            em.getTransaction().commit();
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        jpaUtil.executeInTransaction(em -> {
+            // Garante que a entidade está no estado "managed" antes de remover.
+            Disciplina managedDisciplina = em.merge(disciplina);
+            em.remove(managedDisciplina);
+        });
     }
 
     public List<Disciplina> buscarPorNome(String nome) {
-        EntityManager em = JPAUtil.getEntityManager();
-        try {
+        return jpaUtil.executeQuery(em -> {
             String jpql = "SELECT d FROM Disciplina d WHERE d.nome LIKE :nome";
             TypedQuery<Disciplina> query = em.createQuery(jpql, Disciplina.class);
             query.setParameter("nome", "%" + nome + "%");
             return query.getResultList();
-        } finally {
-            if (em.isOpen()) {
-                em.close();
-            }
-        }
+        });
     }
 }

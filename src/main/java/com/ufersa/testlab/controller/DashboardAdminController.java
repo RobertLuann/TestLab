@@ -1,10 +1,13 @@
 package com.ufersa.testlab.controller;
 
 import com.ufersa.testlab.model.entities.Usuario;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -77,6 +80,31 @@ public class DashboardAdminController {
             contentArea.getChildren().setAll(view);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    @FXML
+    private void handleVoltarAction(ActionEvent event) {
+        try {
+            // 1. Fecha a janela atual (o Dashboard)
+            // Pega o Stage (janela) a partir do evento do botão que foi clicado
+            Stage stageAtual = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stageAtual.close();
+
+            // 2. Carrega e exibe a nova janela de Login
+            // ATENÇÃO: Verifique se o caminho para o seu LoginView.fxml está correto!
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/ufersa/testlab/views/LoginView.fxml"));
+            Parent root = loader.load();
+
+            Stage loginStage = new Stage();
+            loginStage.setTitle("TestLab - Login");
+            loginStage.setScene(new Scene(root));
+            loginStage.show();
+
+        } catch (IOException e) {
+            System.err.println("Erro ao tentar voltar para a tela de login.");
+            e.printStackTrace();
+            // Opcional: Mostrar um alerta de erro para o usuário
+            new Alert(Alert.AlertType.ERROR, "Não foi possível carregar a tela de login.").showAndWait();
         }
     }
 }

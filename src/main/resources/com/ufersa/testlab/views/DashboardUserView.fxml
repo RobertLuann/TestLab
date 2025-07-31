@@ -1,16 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.Pane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="mainPane" prefHeight="600.0" prefWidth="900.0" stylesheets="@../styles/dashboard-style.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.DashboardUserController">
 
@@ -23,22 +15,25 @@
                 <Label styleClass="title-label" text="TestLab" />
                 <Label fx:id="usuarioLabel" styleClass="user-label" text="Usuário: ..." />
 
-                <Button onAction="#handleEditarProvas" styleClass="nav-button" text="Ver Disciplinas " />
-                <Button onAction="#handleVerQuestoes" styleClass="nav-button" text="Ver Questões" />
+                <Button onAction="#handleMinhasProvas" styleClass="nav-button" text="Minhas Provas" />
+                <Button onAction="#handleConsultarDisciplinas" styleClass="nav-button" text="Consultar Disciplinas" />
+                <Button onAction="#handleConsultarQuestoes" styleClass="nav-button" text="Consultar Questões" />
 
                 <Pane VBox.vgrow="ALWAYS" />
-                <Button fx:id="newExamButton" alignment="BASELINE_CENTER" layoutY="291.0" onAction="#handleCriarNovaProva" styleClass="cta-button" text="Gerar Nova Prova" />
+
+                <Button fx:id="newExamButton" alignment="BASELINE_CENTER" onAction="#handleCriarNovaProva" styleClass="cta-button" text="Gerar Prova" />
+                <Button onAction="#handleVoltarAction" styleClass="cta-button" text="Voltar para o Login" />
+
             </children>
         </VBox>
     </left>
+
     <center>
         <VBox fx:id="contentArea" spacing="20.0" style="-fx-background-color: #f4f4f4;" BorderPane.alignment="CENTER">
             <children>
-                <HBox alignment="CENTER_LEFT" spacing="10.0">
-                    <children>
-                        <TextField fx:id="searchBar" promptText="Pesquisar provas por disciplina ou semestre de criação..." HBox.hgrow="ALWAYS" />
-                    </children>
-                </HBox>
+                <Label styleClass="view-title" text="Minhas Provas" />
+
+                <TextField fx:id="searchBar" promptText="Pesquisar provas por disciplina ou semestre de criação..." />
 
                 <TableView fx:id="provasTableView" VBox.vgrow="ALWAYS">
                     <columnResizePolicy>
@@ -46,13 +41,12 @@
                     </columnResizePolicy>
                     <columns>
                         <TableColumn fx:id="tituloColumn" text="Título da Prova" />
-                        <TableColumn fx:id="qtdQuestoesColumn" prefWidth="119.0" text="Qtd. Questões" />
-                        <TableColumn fx:id="disciplinaColumn" prefWidth="150.0" text="Disciplina" />
-                        <TableColumn fx:id="dataCriacaoColumn" prefWidth="136.0" text="Semestre de Criação" />
-
-                        <TableColumn fx:id="acoesColumn" prefWidth="150.0" text="Ações" />
+                        <TableColumn fx:id="codigoDisciplinaColumn" text="Código Disciplina" />
+                        <TableColumn fx:id="disciplinaColumn" text="Disciplina" />
+                        <TableColumn fx:id="qtdQuestoesColumn" text="Qtd. Questões" />
+                        <TableColumn fx:id="dataCriacaoColumn" text="Semestre de Criação" />
+                        <TableColumn fx:id="acoesColumn" text="Ações" />
                     </columns>
-
                 </TableView>
 
             </children>

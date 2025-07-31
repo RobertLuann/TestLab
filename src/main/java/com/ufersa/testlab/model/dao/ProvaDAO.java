@@ -13,7 +13,7 @@ public class ProvaDAO {
     private final JPAUtil jpaUtil = JPAUtil.getInstancia();
 
     public void cadastrarProva(Prova prova) {
-        // 2. Use o método auxiliar para toda a lógica de transação.
+
         jpaUtil.executeInTransaction(em -> em.persist(prova));
     }
 
@@ -65,12 +65,7 @@ public class ProvaDAO {
     }
 
     public Prova atualizarProva(Prova prova) {
-        // O método merge retorna a instância atualizada, então o executeQuery é adequado aqui.
-        // Se precisássemos garantir uma transação, poderíamos criar um "executeInTransactionWithReturn".
-        // Mas para simplificar, vamos usar o que temos.
         jpaUtil.executeInTransaction(em -> em.merge(prova));
-        // Nota: a prova retornada pelo merge não estará disponível aqui. Se precisar dela,
-        // o ideal seria criar uma variação do método auxiliar.
         return prova; // Retorna o objeto original, que o merge pode ter atualizado.
     }
 

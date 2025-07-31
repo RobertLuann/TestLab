@@ -4,6 +4,10 @@ import com.ufersa.testlab.model.entities.Disciplina;
 import com.ufersa.testlab.util.JPAUtil; // Importa a classe utilitária
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
+
 import java.util.List;
 
 public class DisciplinaDAO {

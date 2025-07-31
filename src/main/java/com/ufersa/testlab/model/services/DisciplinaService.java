@@ -5,6 +5,7 @@ import com.ufersa.testlab.model.entities.Disciplina;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DisciplinaService {
@@ -31,8 +32,7 @@ public class DisciplinaService {
             throw new EntityExistsException("Já existe outra disciplina com esse código.");
         }
 
-        Disciplina disciplina = new Disciplina(codigo, nome);
-        assuntos.forEach(disciplina::setAssunto);
+        Disciplina disciplina = new Disciplina(codigo, nome, assuntos);
         disciplinaDAO.cadastrarDisciplina(disciplina);
     }
 
@@ -56,6 +56,14 @@ public class DisciplinaService {
         return disciplinas;
     }
 
+    public List<Disciplina> findByName(String nome) {
+        if (nome == null || nome.trim().length() < 2) {
+            return new ArrayList<>();
+        }
+
+        return disciplinaDAO.buscarPorNome(nome);
+    }
+
     public void atualizarDisciplina(String codigo, String nome, List<String> assuntos) {
         Disciplina disciplina = buscarPorCodigo(codigo);
 
@@ -72,7 +80,7 @@ public class DisciplinaService {
 
             disciplina.setNome(nome);
             disciplina.deleteAssuntos();
-            assuntos.forEach(disciplina::setAssunto);
+            disciplina.setAssuntos(assuntos);
 
             disciplinaDAO.atualizarDisciplina(disciplina);
         }

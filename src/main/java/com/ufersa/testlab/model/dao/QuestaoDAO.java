@@ -7,7 +7,13 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 import java.util.Collections;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class QuestaoDAO {
@@ -27,7 +33,6 @@ public class QuestaoDAO {
         );
     }
 
-    // METODO RESTAURADO E CORRIGIDO
     public List<Questao> buscarPorDisciplina(String codigoDisciplina) {
         return jpaUtil.executeQuery(em -> {
             String jpql = "SELECT q FROM Questao q WHERE q.disciplina.codigo = :codigoDisciplina";
@@ -37,7 +42,6 @@ public class QuestaoDAO {
         });
     }
 
-    // METODO RESTAURADO E CORRIGIDO
     public List<Questao> buscarPorAssunto(String assunto) {
         return jpaUtil.executeQuery(em ->
                 em.createQuery("SELECT q FROM Questao q WHERE q.assunto LIKE :assunto", Questao.class)
@@ -46,13 +50,39 @@ public class QuestaoDAO {
         );
     }
 
-    // MÉTODO RESTAURADO E CORRIGIDO
     public List<Questao> buscarPorDificuldade(Long dificuldade) {
         return jpaUtil.executeQuery(em ->
                 em.createQuery("SELECT q FROM Questao q WHERE q.dificuldade = :dificuldade", Questao.class)
                         .setParameter("dificuldade", dificuldade)
                         .getResultList()
         );
+    }
+
+    public List<Questao> buscarPorFiltros(String disciplina, String assunto, Long dificuldade) {
+        EntityManager em = JPAUtil.getEntityManager();
+        StringBuilder jpql = new StringBuilder("SELECT q FROM Questao q WHERE 1=1");
+        Map<String, Object> params = new HashMap<>();
+
+        if (disciplina != null && !disciplina.isBlank()) {
+            jpql.append(" AND q.codigoDisciplina LIKE :disciplina");
+            params.put("disciplina", "%" + disciplina + "%");
+        }
+        if (assunto != null && !assunto.isBlank()) {
+            jpql.append(" AND q.assunto LIKE :assunto");
+            params.put("assunto", "%" + assunto + "%");
+        }
+        if (dificuldade != null) {
+            jpql.append(" AND q.dificuldade = :dificuldade");
+            params.put("dificuldade", dificuldade);
+        }
+
+        TypedQuery<Questao> query = em.createQuery(jpql.toString(), Questao.class);
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        return query.getResultList();
     }
 
     public void atualizarQuestao(Questao questao) {

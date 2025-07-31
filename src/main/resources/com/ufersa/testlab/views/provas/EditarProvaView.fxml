@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="TOP_CENTER" spacing="15.0" styleClass="form-container" stylesheets="@/com/ufersa/testlab/styles/form-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.provas.EditarProvaController">
+    <padding><Insets bottom="25.0" left="25.0" right="25.0" top="25.0" /></padding>
+
+    <Label styleClass="form-title" text="Editar Prova" />
+
+    <VBox spacing="5.0">
+        <Label styleClass="form-label" text="Título da Prova:" />
+        <TextField fx:id="tituloField" styleClass="text-field" />
+    </VBox>
+
+    <VBox spacing="5.0">
+        <Label styleClass="form-label" text="Disciplina:" />
+        <TextField fx:id="disciplinaField" disable="true" styleClass="text-field" />
+    </VBox>
+
+    <Label styleClass="form-label" text="Questões na Prova:" />
+    <ListView fx:id="questoesListView" prefHeight="200.0" />
+
+    <Button fx:id="salvarButton" onAction="#handleSalvar" styleClass="primary-action-button" text="Salvar Alterações">
+        <VBox.margin><Insets top="10.0" /></VBox.margin>
+    </Button>
+</VBox>

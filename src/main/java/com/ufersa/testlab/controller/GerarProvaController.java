@@ -14,13 +14,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import com.ufersa.testlab.controller.provas.GerenciarProvasController;
 
 import java.net.URL;
 import java.util.*;
 
 public class GerarProvaController implements Initializable {
 
-    // --- Componentes FXML ---
     @FXML private TextField tituloTextField;
     @FXML private ComboBox<Disciplina> disciplinaComboBox;
     @FXML private Label totalQuestoesLabel;
@@ -32,7 +32,7 @@ public class GerarProvaController implements Initializable {
     private List<Spinner<Integer>> spinners;
     private Prova provaParaEditar;
 
-    // --- DAOs ---
+    private GerenciarProvasController g = new GerenciarProvasController();
     private DisciplinaDAO disciplinaDAO;
     private QuestaoDAO questaoDAO;
     private ProvaDAO provaDAO;
@@ -45,8 +45,6 @@ public class GerarProvaController implements Initializable {
 
         this.spinners = List.of(dificuldade1Spinner, dificuldade2Spinner, dificuldade3Spinner, dificuldade4Spinner, dificuldade5Spinner);
 
-        // ===== CORREÇÃO PRINCIPAL AQUI =====
-        // Agora chamamos o método com o nome que existe no seu DAO: "listarDisciplinas()"
         disciplinaComboBox.setItems(FXCollections.observableArrayList(disciplinaDAO.listarDisciplinas()));
 
         configurarDisplayDisciplina();
@@ -83,7 +81,6 @@ public class GerarProvaController implements Initializable {
 
     @FXML
     void handleGerarProvaAction(ActionEvent event) {
-        // --- Esta parte inicial, de obter os dados da tela, permanece a mesma ---
         String titulo = tituloTextField.getText();
         Disciplina disciplina = disciplinaComboBox.getValue();
 
@@ -92,7 +89,6 @@ public class GerarProvaController implements Initializable {
             return;
         }
 
-        // --- A lógica para buscar questões aleatórias também permanece a mesma ---
         List<Questao> questoesDaProva = new ArrayList<>();
         StringBuilder erros = new StringBuilder();
 
@@ -110,14 +106,10 @@ public class GerarProvaController implements Initializable {
             }
         }
 
-        // --- INÍCIO DAS MODIFICAÇÕES E LÓGICA FINAL ---
-
-        // 1. Informa o usuário sobre questões faltantes, mas continua o processo
         if (!erros.isEmpty()) {
             exibirAlerta("Aviso de Questões Faltantes", erros.toString());
         }
 
-        // 2. Para a execução se, no final, nenhuma questão foi selecionada
         if (questoesDaProva.isEmpty()) {
             exibirAlerta("Erro", "Nenhuma questão foi encontrada com os critérios. A prova não pode ser gerada.");
             return;
@@ -125,23 +117,20 @@ public class GerarProvaController implements Initializable {
 
         Collections.shuffle(questoesDaProva);
 
-        // 3. Cria o objeto Prova com os dados atualizados
         Prova novaProva = new Prova(titulo, questoesDaProva, disciplina);
 
-        // 4. LÓGICA PRINCIPAL: Decide se vai ATUALIZAR ou CADASTRAR
         if (provaParaEditar != null) {
-            // Se 'provaParaEditar' existe, estamos no modo de edição.
-            // Definimos o ID da prova original para que o JPA saiba qual registro atualizar.
             novaProva.setId(provaParaEditar.getId());
             provaDAO.atualizarProva(novaProva);
             exibirAlerta("Sucesso", "Prova '" + novaProva.getTitulo() + "' atualizada com sucesso!");
         } else {
-            // Se 'provaParaEditar' for nulo, estamos criando uma prova nova.
             provaDAO.cadastrarProva(novaProva);
             exibirAlerta("Sucesso", "Prova '" + novaProva.getTitulo() + "' gerada com sucesso!");
         }
 
-        fecharJanela(); // Fecha a janela modal
+        fecharJanela();
+
+        g.carregarProvas();
     }
 
     @FXML
@@ -167,31 +156,22 @@ public class GerarProvaController implements Initializable {
     public void initData(Prova prova) {
         this.provaParaEditar = prova;
 
-        // 1. Preenche os campos de Título e Disciplina (como já fazia)
         tituloTextField.setText(prova.getTitulo());
         disciplinaComboBox.setValue(prova.getDisciplina());
 
-        // Opcional: Manter a disciplina desabilitada para evitar inconsistências na edição
         disciplinaComboBox.setDisable(true);
 
-        // 2. Nova Lógica: Contar as questões existentes por dificuldade
-        //    Cria um mapa para armazenar a contagem: Dificuldade -> Quantidade
         Map<Long, Integer> contagemPorDificuldade = new HashMap<>();
         for (Questao q : prova.getQuestoes()) {
             long dificuldade = q.getDificuldade();
-            // O método 'merge' incrementa o contador para a dificuldade encontrada
             contagemPorDificuldade.merge(dificuldade, 1, Integer::sum);
         }
 
-        // 3. Preenche os Spinners com os valores que acabamos de contar
-        //    Este loop assume que sua lista 'spinners' está ordenada (spinner de dificuldade 1, 2, 3...)
         for (int i = 0; i < spinners.size(); i++) {
             long dificuldadeAtual = i + 1L;
 
-            // Pega a contagem do mapa. Se não houver questões daquela dificuldade, usa 0.
             int quantidade = contagemPorDificuldade.getOrDefault(dificuldadeAtual, 0);
 
-            // Define o valor no Spinner correspondente
             spinners.get(i).getValueFactory().setValue(quantidade);
         }
     }

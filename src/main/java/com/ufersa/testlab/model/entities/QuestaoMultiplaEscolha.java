@@ -10,7 +10,7 @@ import java.util.Objects;
 @DiscriminatorValue("MULTIPLA_ESCOLHA")
 public class QuestaoMultiplaEscolha extends Questao {
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "alternativas", joinColumns = @JoinColumn(name = "questao_id"))
     @Column(name = "alternativa")
     private List<Alternativa> alternativas = new ArrayList<>();
@@ -22,8 +22,8 @@ public class QuestaoMultiplaEscolha extends Questao {
     }
 
     public QuestaoMultiplaEscolha(String codigo, String enunciado, String codigoDisciplina, String assunto,
-                                  Long dificuldade, List<Alternativa> alternativas, Long gabarito) {
-        super(codigo, enunciado, codigoDisciplina, assunto, dificuldade);
+                                  Long dificuldade, List<Alternativa> alternativas, Long gabarito, Disciplina disciplina) {
+        super(codigo, enunciado, codigoDisciplina, assunto, dificuldade, disciplina);
         setAlternativas(alternativas);
         setGabarito(gabarito);
     }

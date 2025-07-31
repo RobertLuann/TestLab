@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@/com/ufersa/testlab/styles/visualizacao-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.disciplinas.GerenciarDisciplinasController">
+    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0" /></padding>
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20.0">
+            <children>
+                <Label styleClass="view-title" text="Gerenciamento de Disciplinas" />
+                <Pane HBox.hgrow="ALWAYS" />
+                <Button onAction="#handleCadastrar" styleClass="add-button" text="Cadastrar Nova Disciplina" />
+            </children>
+            <padding><Insets bottom="20.0" /></padding>
+        </HBox>
+    </top>
+    <center>
+        <TableView fx:id="tabelaDisciplinas" BorderPane.alignment="CENTER">
+            <columns>
+                <TableColumn fx:id="colunaCodigo" prefWidth="150.0" text="Código" />
+                <TableColumn fx:id="colunaNome" prefWidth="350.0" text="Nome da Disciplina" />
+                <TableColumn fx:id="colunaAssuntos" prefWidth="300.0" text="Assuntos" />
+                <TableColumn fx:id="colunaEditar" minWidth="80.0" text="Editar" styleClass="centered-cell" />
+                <TableColumn fx:id="colunaRemover" minWidth="80.0" text="Remover" styleClass="centered-cell" />
+            </columns>
+            <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY" /></columnResizePolicy>
+        </TableView>
+    </center>
+</BorderPane>

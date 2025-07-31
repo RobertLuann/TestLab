@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_CENTER" spacing="15.0" styleClass="form-container" stylesheets="@/com/ufersa/testlab/styles/form-style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ufersa.testlab.controller.disciplinas.FormularioDisciplinaController">
+    <padding><Insets bottom="25.0" left="25.0" right="25.0" top="25.0" /></padding>
+
+    <Label fx:id="tituloLabel" styleClass="form-title" text="Nova Disciplina" />
+
+    <VBox spacing="5.0">
+        <Label styleClass="form-label" text="Código da Disciplina:" />
+        <TextField fx:id="codigoField" promptText="Ex: DCA0101" styleClass="text-field" />
+    </VBox>
+
+    <VBox spacing="5.0">
+        <Label styleClass="form-label" text="Nome da Disciplina:" />
+        <TextField fx:id="nomeField" promptText="Ex: Programação Orientada a Objetos" styleClass="text-field" />
+    </VBox>
+
+    <Separator prefWidth="200.0"><VBox.margin><Insets top="10.0" /></VBox.margin></Separator>
+
+    <Label styleClass="form-label" text="Assuntos:" />
+    <ListView fx:id="assuntosListView" prefHeight="150.0" />
+
+    <HBox alignment="CENTER_LEFT" spacing="10.0">
+        <TextField fx:id="novoAssuntoField" promptText="Digite o nome do novo assunto" HBox.hgrow="ALWAYS" />
+        <Button onAction="#handleAdicionarAssunto" text="Adicionar" />
+    </HBox>
+
+    <Button fx:id="salvarButton" onAction="#handleSalvar" styleClass="primary-action-button" text="Salvar">
+        <VBox.margin><Insets top="20.0" /></VBox.margin>
+    </Button>
+</VBox>

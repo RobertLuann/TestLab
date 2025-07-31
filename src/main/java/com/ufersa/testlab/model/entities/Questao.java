@@ -30,12 +30,13 @@ public abstract class Questao {
     // Construtores
     public Questao() {}
 
-    public Questao(String codigo, String enunciado, String codigoDisciplina, String assunto, Long dificuldade) {
+    public Questao(String codigo, String enunciado, String codigoDisciplina, String assunto, Long dificuldade, Disciplina disciplina) {
         setCodigo(codigo);
         setEnunciado(enunciado);
-        setDisciplina(codigoDisciplina);
+        setCodigoDisciplina(codigoDisciplina);
         setAssunto(assunto);
         setDificuldade(dificuldade);
+        setDisciplina(disciplina);
     }
 
     // Setters
@@ -57,12 +58,6 @@ public abstract class Questao {
         }
         this.codigoDisciplina = codigoDisciplina;
     }
-    public void setDisciplina(String codigoDisciplina) {
-        if (codigoDisciplina == null || codigoDisciplina.isBlank()) {
-            throw new IllegalArgumentException("O código da disciplina não pode ser nulo ou vazio.");
-        }
-        this.codigoDisciplina = codigoDisciplina;
-    }
 
     public void setAssunto(String assunto) {
         if (assunto == null || assunto.isBlank()) {
@@ -78,11 +73,10 @@ public abstract class Questao {
         this.dificuldade = dificuldade;
     }
     public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
-        // Mantém o campo 'codigoDisciplina' sincronizado por segurança, se precisar dele
-        if (disciplina != null) {
-            this.codigoDisciplina = disciplina.getCodigo();
+        if (disciplina == null) {
+            throw new IllegalArgumentException("Disciplina não pode ser nula ou vazia.");
         }
+        this.disciplina = disciplina;
     }
     public Disciplina getDisciplinaObject() {
         return this.disciplina;
